@@ -1,0 +1,78 @@
+.clp_inner {
+    display: grid;
+    gap: 1.6rem;
+    margin-bottom: 4rem;
+}
+
+.collection {
+    margin-bottom: 4rem;
+    text-align: center;
+    width: 100%;
+    text-decoration: none;
+    transition: 0.3s;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+.collection:hover{
+    border: 1px solid rgba(0, 0, 0, 0.247);
+    transform: scale(1.05);
+}
+.clp_hero__btn svg path{
+    fill: var(--black);
+}
+.clp_hero__btn:hover svg{
+    animation: flick 0.5s infinite forwards;
+}
+@keyframes flick {
+    0%{
+        transform: translate(0);
+    }
+    50%{
+        transform: translate(1rem);
+    }
+    100%{
+        transform: translate(0);
+    }
+}
+.collection img {
+    width: 100%;
+}
+
+.collection__title {
+    margin-top: 0.8rem;
+}
+
+.clp {
+    margin-top: 4rem;
+}
+
+.clp_hero {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 37.5% 1fr;
+    gap: 0 5.8rem;
+}
+
+.clp_hero__title {
+    margin: 1.6rem 0 4rem;
+    font-weight: 700;
+    font-size: 4rem;
+    line-height: 6.2rem;
+    letter-spacing: 0.175em;
+    text-transform: uppercase;
+}
+
+.clp_hero__btn {
+    color: var(--black);
+    border: 1px solid var(--black);
+}
+
+.clp_hero_right {
+    position: relative;
+    padding-bottom: 7.7rem;
+}
+
+.clp_hero__img2 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

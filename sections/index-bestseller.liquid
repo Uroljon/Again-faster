@@ -1,0 +1,80 @@
+{{ 'style.index-bestseller.css' | asset_url | stylesheet_tag }}
+
+  <div class="container-fluid">
+    <div class="bestseller__inner">
+        <div class="bestseller__left">
+        <img src="{%- if section.settings.left != blank -%} 
+                    {{ section.settings.left | image_url}} 
+                    {%- else -%} {{ 'bestseller_left.jpg' | asset_url}} 
+                  {%- endif -%}" />
+        </div>
+        <div class="bestseller__right">
+            <div class="bestseller__right__inner">
+              <img src="{%- if section.settings.right != blank -%} 
+                          {{ section.settings.right | image_url}} 
+                          {%- else -%} {{ 'bestseller_right.jpg' | asset_url}} 
+                        {%- endif -%}" />
+                <div class="text-12 bestseller__subtitle">{{ section.settings.subtitle }}</div>
+                <h2 class="text-24 bestseller__title">{{ section.settings.title }}</h2>
+                <p class="bestseller__text">{{ section.settings.text }}</p>
+                <a href="{{ section.settings.button_url }}" class="btn--small">{{ section.settings.button }}</a>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+{% schema %}
+{
+  "name": "Bestsellers",
+  "tag": "section",
+  "class": "bestseller",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "left",
+      "label": "Bestseller left side image change"
+    },
+    {
+      "type": "image_picker",
+      "id": "right",
+      "label": "Bestseller right side image change"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Bestseller subtitle change",
+      "default": "Best seller"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Bestseller title change",
+      "default": "TRULY, AN ALL IN ONE BARBELL"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Bestseller text change",
+      "default": "Design that matches the performance and quality of other elite level competition bars"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Bestseller button text change",
+      "default": "Shop weights"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Bestseller button url change"
+    }
+  ],
+  "presets": [
+    {
+        "name": "Bestseller section"
+    }
+  ]
+
+}
+{% endschema %}

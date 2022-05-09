@@ -1,0 +1,53 @@
+{{ 'style.index-header.css' | asset_url | stylesheet_tag }}
+<style>
+header {
+  background: url("{%- if section.settings.hero__bg != blank -%} {{ section.settings.hero__bg | image_url }} {%- else -%} {{ 'hero.jpg' | asset_url}} {%- endif -%}") no-repeat center center /cover;
+}
+</style>
+<header>
+  <div class="container">
+    <div class="hero">
+      <h1 class="hero__title">{{ section.settings.hero__title }}</h1>
+      <p class="hero__text">{{ section.settings.hero__text }}</p>
+      <a class="btn" href="{{ section.settings.hero__btn__url }}">{{ section.settings.hero__btn }} {% render "icon-right-arrow" %}</a>
+    </div>
+  </div>
+</header>
+
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero__title",
+      "label": "Hero title change",
+      "default": "Team barbell"
+    },
+    {
+      "type": "text",
+      "id": "hero__text",
+      "label": "Hero text change",
+      "default": "Team Barbell was to design a piece of equipment that matches the performance and quality of other elite level competition bars."
+    },
+    {
+      "type": "text",
+      "id": "hero__btn",
+      "label": "Hero button text change",
+      "default": "Explore"
+    },
+    {
+      "type": "url",
+      "id": "hero__btn__url",
+      "label": "Hero button url change"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero__bg",
+      "label": "Hero img change"
+    }
+  ]
+
+}
+{% endschema %}

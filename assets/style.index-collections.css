@@ -1,0 +1,25 @@
+.collections {
+    margin-top: 9.5rem;
+}
+
+.mySwiper {
+    overflow-x: hidden;
+}
+
+.collection {
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    user-select: none;
+}
+.collection:hover img{
+    transition: 0.5s;
+    transform: scale(1.05);
+}
+.collection img {
+    width: 100%;
+}
+
+.collection__title {
+    margin: 0.8rem 0 4rem;
+}

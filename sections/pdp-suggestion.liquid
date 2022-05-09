@@ -1,0 +1,79 @@
+{{ 'style.product.css' | asset_url | stylesheet_tag }}
+{{ 'style.pdp-suggestion.css' | asset_url | stylesheet_tag }}
+
+<div class="container">
+  <h2 class="pdp_title suggestions__title">{{ section.settings.suggestion_title }}</h2>
+    {% for block in section.blocks %}
+      <div class="suggestions__grid grid-{{ block.settings.suggestions_column }}">
+      {% assign suggestions = block.settings.suggestions %}
+       {% for item in suggestions %}
+          {% include "product", item %}
+      {% else %}
+        <p>No products in this collection yet!</p>
+      {% endfor %}
+
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Products grid",
+  "class": "suggestions",
+  "settings": [
+    {
+        "type": "text",
+        "id": "suggestion_title",
+        "label": "Suggestions title",
+        "default": "You might also like"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "suggestions",
+      "name": "Suggestions grid",
+      "settings": [
+        {
+          "type": "product_list",
+          "id": "suggestions",
+          "label": "Product grid"
+        },
+        {
+            "type": "select",
+            "id": "suggestions_column",
+            "label": "Grid column number",
+            "options": [
+            {
+                "value": "1",
+                "label": "1"
+            },
+            {
+                "value": "2",
+                "label": "2"
+            },
+            {
+                "value": "3",
+                "label": "3"
+            },
+            {
+                "value": "4",
+                "label": "4"
+            }
+            ],
+            "default": "4"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+        "name": "You might also like",
+        "blocks": [
+            {
+                "type": "suggestions"
+            }
+        ]
+    }
+  ]
+}
+{% endschema %}

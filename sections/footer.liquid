@@ -1,0 +1,74 @@
+<footer>
+    <div class="container">
+        <div class="footer__inner">
+            {% form 'customer', class: "footer__form" %}
+                <h3 class="footer__link__title">{{ section.settings.footer_link_title_1 }}</h3>
+                <div class="footer__input__wrapper">
+                    <input 
+                      type="email" 
+                      class="footer__input" 
+                      name="contact[email]"
+                      id="email" 
+                      placeholder="Enter your email" 
+                      value="{{ form.email }}" 
+                      aria-required="true">
+                    <button type="submit" class="footer__btn">{% render "icon-right-arrow" %}</button>
+                </div>
+                <div class="footer__social">
+                    <a href="#!">{% render "icon-facebook" %}</a>
+                    <a href="#!">{% render "icon-instagram" %}</a>
+                    <a href="#!">{% render "icon-mail" %}</a>
+                </div>
+            {% endform %}
+            <div class="footer__row">
+              <ul class="footer__links footer__links--first">
+                  <h3 class="footer__link__title">{{ section.settings.footer_link_title_2 }}</h3>
+                  {% for link in linklists.footer.links %}
+                  <li><a href="{{ link.url }}" class="footer__link">{{ link.title }}</a></li>
+                  {% endfor %}
+              </ul>
+              <div class="footer__links footer__links--second">
+                  <h3 class="footer__link__title">{{ section.settings.footer_link_title_3 }}</h3>
+                  {% for link in linklists.footer-second.links %}
+                  <li><a href="{{ link.url }}" class="footer__link">{{ link.title }}</a></li>
+                  {% endfor %}
+              </div>
+            </div>
+
+        </div>
+        <p class="copyright">{{ section.settings.copyright }}</p>
+    </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+        "type": "text",
+        "id": "footer_link_title_1",
+        "label": "Footer 1st link title change",
+        "default": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "footer_link_title_2",
+      "label": "Footer 2nd link title change",
+      "default": "Again faster"
+    },
+    {
+      "type": "text",
+      "id": "footer_link_title_3",
+      "label": "Footer 3rd link title change",
+      "default": "Get help"
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Footer copyright change",
+      "default": "©2020 Again Faster. All Rights Reserved"
+    }
+  ]
+
+}
+{% endschema %}

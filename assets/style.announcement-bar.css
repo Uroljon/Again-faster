@@ -1,0 +1,13 @@
+.announcement-bar__inner {
+    text-align: center;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.announcement-bar__text {
+    font-family: 'Oswald', sans-serif;
+    color: var(--black);
+    text-decoration: none;
+}

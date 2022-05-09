@@ -1,0 +1,43 @@
+{{ 'style.clp.css' | asset_url | stylesheet_tag }}
+
+<div class="container">
+  <div class="clp_inner grid-{{ section.settings.grid_column }}">
+    {% assign handles = collection.metafields.accentuate.collection_wrapper | split: '|' %}
+    {% for handle in handles %}
+      {%- include "c-item", item: collections[handle]  -%}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "clp collections settings",
+  "class": "clp",
+  "settings": [
+    {
+      	"type": "select",
+        "id": "grid_column",
+        "label": "Grid column number",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ],
+        "default": "4"
+    }
+  ]
+}
+{% endschema %}

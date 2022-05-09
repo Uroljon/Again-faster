@@ -1,0 +1,34 @@
+.bestseller{
+    margin: 12rem 0;
+}
+.bestseller__inner{
+    display: grid;
+    grid-template-columns: 57.43% 1fr;
+    align-items: center;
+}
+
+.bestseller__right__inner{
+    width: 82.2%;
+    margin: auto;
+}
+.bestseller__right img{
+    width: 100%;
+    height: 100%;
+    max-width: 46.2rem;
+    max-height: 62.8rem;
+    object-fit: cover;
+}
+.bestseller__left img{
+    max-width: 82.7rem;
+    max-height: 102.4rem;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.bestseller__subtitle{
+    margin: 4rem 0 0.8rem;
+}
+.bestseller__text{
+    margin: 1.6rem 0 4rem;
+    color: #8f8f8f;
+}

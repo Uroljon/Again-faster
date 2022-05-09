@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="products__grid grid-{{ section.settings.grid_column }}">
+    {% for product in collection.products %}
+      <div class="product">
+        {% unless product.available %}<a href="#!" class="product--sold">Sold Out - Get notified when back in stock</a>{% endunless %}
+        <div class="product__badges">
+          {% if product.metafields.accentuate.is_on_sale %}
+            <p class="product__badge product__badge--sale">SALE</p>
+          {% endif %}
+          {% if product.metafields.accentuate.best_seller %}
+            <p class="product__badge product__badge--bestseller">Best Seller</p>
+          {% endif %}
+          {% if product.metafields.accentuate.free_shipping %}
+            <p class="product__badge">Free Shipping</p>
+          {% endif %}
+          {% if product.metafields.accentuate.pre_order %}
+            <p class="product__badge product__badge--pre">Pre-Order</p>
+          {% endif %}
+        </div>
+        <a href="{{ product.url | within: collection }}" class="product__img {% unless product.available %}opacity-half{% endunless %}">
+          <img src="{{ product.featured_image.src | img_url: '443x554' }}" alt="{{ product.featured_image.alt | escape }}">
+        </a>
+        <a href="{{ product.url | within: collection }}" class="text-12 product__title">{{ product.title }}</a>
+        <div class="ratings">
+          {% assign limit = product.metafields.my_fields.rating.value | split: '.' %}
+          {% if limit %}
+            {% for i in (1..limit[0]) %}
+              {% render "icon-star" %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        <p class="text-12">{{ product.price | money }}</p>
+        
+      </div>
+    {% else %}
+      <p>No products in this collection yet!</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Products grid",
+  "class": "collections",
+  "settings": [
+    {
+      	"type": "select",
+        "id": "grid_column",
+        "label": "Grid column number",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ],
+        "default": "3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product grid"
+    }
+  ]
+}
+{% endschema %}

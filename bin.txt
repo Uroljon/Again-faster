@@ -1,0 +1,127 @@
+ {% for link in linklists.main-menu.links %}
+  {% comment %} {% assign child_list_handle = link.title | handleize %} {% endcomment %}
+  {% comment %} {% if linklists[child_list_handle].links != blank %} {% endcomment %}
+  <a href="{{ link.url }}">{{ link.title }}</a>
+  {% comment %} [{% for childlink in linklists[child_list_handle].links %}
+  <a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+  {% endfor %}] {% endcomment %}
+  {% comment %} {% else %} {% endcomment %}
+  {% comment %} <a href="{{ link.url }}">{{ link.title }}</a> {% endcomment %}
+  {% comment %} {% endif %} {% endcomment %}
+  {% endfor %}
+
+
+  
+  index.json: "wrapper": "div.div_class[attribute-one=value]",
+
+  {% schema %}
+{
+    "name": "Hero section",
+    "blocks": [
+        "title": {
+            "type": "title",
+            "settings": {
+                "id": "hero__title",
+                "label": "Change hero title here:",
+                "default": "Team barbell"
+            }
+        },
+        "text": {
+            "type": "text",
+            "settings": {
+                "id": "hero__text",
+                "label": "Change hero text here:",
+                "default": "Team Barbell was to design a piece of equipment that matches the performance and quality of other elite level competition bars."
+            }
+        },
+        "button": {
+            "type": "buttons",
+            "settings": {
+                "id": "hero__btn",
+                "label": "Change hero btn here:",
+                "default": "Explore"
+            }
+        }
+    ]
+}
+{% endschema %}
+
+
+
+"blocks": [
+  {
+  "name": "Title",
+  "type": "title",
+  "settings": [
+    {
+    "type": "text",
+    "id": "hero__title",
+    "label": "Hero title change",
+    "default": "Team barbell"
+    }
+  ]
+  },
+  {
+  "name": "Text",
+  "type": "text",
+  "settings": [
+    {
+    "type": "text",
+    "id": "hero__text",
+    "label": "Hero text change",
+    "default": "Team Barbell was to design a piece of equipment that matches the performance and quality of other elite level competition bars."
+    }
+  ]
+  }
+]
+
+
+
+{% paginate collection.products by 2 %}
+  <h1>{{ collection.title }} asdashdjasda</h1>
+  asdssdnsjdfbdsnsamdsnfb
+  asdasda
+  asdasdaasda
+  asdasda
+  {% for product in collection.products %}
+    <div>
+      <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+      {{ product.price | money }}
+      {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
+      <a href="{{ product.url | within: collection }}">
+        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+      </a>
+    </div>
+  {% else %}
+    <p>no matches</p>
+  {% endfor %}
+  {% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}
+{% endpaginate %}
+
+
+
+{% for product in collection.products limit:5 %}
+      {% assign grid_item_width = 'large--one-fifth medium--one-half' %}
+      <div>
+        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+        {{ product.price | money }}
+        {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
+        <a href="{{ product.url | within: collection }}">
+          <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+        </a>
+      </div>
+    {% endfor %}
+
+      More  &rsaquo;
+
+
+
+{% paginate collection.products by 2 %}
+{% endpaginate %}
+{% if paginate.pages > 1 %}
+  {{ paginate | default_pagination }}
+{% endif %}
+
+      <script> 
+            console.log("{{ block.settings.c_row | last}}") 
+        </script>

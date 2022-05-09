@@ -1,0 +1,30 @@
+<div class="product">
+    {% unless item.available %}<a href="#!" class="product--sold">Sold Out - Get notified when back in stock</a>{% endunless %}
+    <div class="product__badges">
+    {% if item.metafields.accentuate.is_on_sale %}
+        <p class="product__badge product__badge--sale">SALE</p>
+    {% endif %}
+    {% if item.metafields.accentuate.best_seller %}
+        <p class="product__badge product__badge--bestseller">Best Seller</p>
+    {% endif %}
+    {% if item.metafields.accentuate.free_shipping %}
+        <p class="product__badge">Free Shipping</p>
+    {% endif %}
+    {% if item.metafields.accentuate.pre_order %}
+        <p class="product__badge product__badge--pre">Pre-Order</p>
+    {% endif %}
+    </div>
+    <a href="{{ item.url }}" class="product__img {% unless item.available %}opacity-half{% endunless %}">
+    <img src="{{ item.featured_image.src | img_url: '328x410' }}" alt="{{ item.featured_image.alt | escape }}">
+    </a>
+    <a href="{{ item.url }}" class="text-12 product__title">{{ item.title }}</a>
+    <div class="ratings">
+    {% assign limit = item.metafields.my_fields.rating.value | split: '.' %}
+    {% if limit %}
+        {% for i in (1..limit[0]) %}
+        {% render "icon-star" %}
+        {% endfor %}
+    {% endif %}
+    </div>
+    <p class="text-12">{{ item.price | money }}</p>
+</div>

@@ -1,0 +1,18 @@
+{
+  "sections": {
+      "main": {
+          "type": "pdp-main"
+      },
+      "banner": {
+          "type": "pdp-banner"
+      },
+      "suggestion": {
+          "type": "pdp-suggestion"
+      }
+  },
+  "order": [
+      "main",
+      "banner",
+      "suggestion"
+  ]
+}

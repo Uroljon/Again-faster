@@ -1,0 +1,6 @@
+<a href="{{ item.url }}" class="collection">
+    {% if item.image %}
+    <img src="{{ item.image | image_url: width: 328, height: 334 }}" alt="{{ item.image.alt }}">
+    {% endif %}
+    <h2 class="text-12 collection__title">{{ item.title }}</h2>
+</a>

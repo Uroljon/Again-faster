@@ -1,0 +1,20 @@
+<nav>
+    <div class="container">
+        <div class="nav__inner">
+            <div class="nav__logo  {% if template.name != "index" %} nav__logo--dark {% endif %}">
+                <a href="{{ routes.root_url }}">{% render "icon-logo" %}</a>
+            </div>
+            <ul class="nav__links">
+                {% for link in linklists.main-menu.links %}
+                <li><a href="{{ link.url }}" class="nav__link">{{ link.title }}</a></li>
+                {% endfor %}
+            </ul>
+            <div class="nav__auth">
+                <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
+                <a href="{{ routes.account_url }}">{% render "icon-account" %}</a>
+                <a href="{{ routes.cart_url }}">{% render "icon-cart" %}</a>
+            </div>
+
+        </div>
+    </div>
+</nav>

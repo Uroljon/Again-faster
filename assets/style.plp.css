@@ -1,0 +1,40 @@
+.header {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.collections {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+.collection {
+    font-size: 12px;
+    line-height: 140%;
+    text-align: center;
+    letter-spacing: 0.175em;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    display: block;
+    transition: 0.5s;
+}
+
+.collection .slash {
+    display: inline-block;
+}
+.collections li:last-child .slash {
+    display: none;
+}
+
+.collection.active, .collection:hover {
+    color: var(--black);
+}
+
+.collection.active .collection__title{
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gold);
+}

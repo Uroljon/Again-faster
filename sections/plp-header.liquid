@@ -1,0 +1,53 @@
+{{ 'style.plp.css' | asset_url | stylesheet_tag }}
+{{ 'style.product.css' | asset_url | stylesheet_tag }}
+
+<div class="container">
+    <h1 class="text-24">{{ section.settings.title }}</h1>
+    {%- if section.blocks[0] -%}
+        {% for block in section.blocks %}
+        <ul class="collections">
+            {% for item in block.settings.c_row %}
+            <li>
+                <a href="{{ item.url }}" class="collection {% if collection.title==item.title %} active {% endif %}"> <span class="collection__title">{{ item.title }}</span> <span class="slash"> / </span> </a>
+            </li>
+            {% endfor %}
+    
+        </ul>
+        {% endfor %}
+    {%- endif -%}
+</div>
+
+{% schema %}
+{
+    "name": "Collection heading",
+    "class": "header",
+    "settings": [
+        {
+        "type": "text",
+        "id": "title",
+        "label": "Change collection title here:"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "c-row",
+            "name": "Collections row",
+            "settings": [
+                {
+                    "type": "collection_list",
+                    "id": "c_row",
+                    "label": "Collections row",
+                    "limit": 8
+                }
+            ]
+        }
+    ],
+    "default": {
+        "blocks": [
+            {
+                "type": "c-row"
+            }
+        ]
+    }
+}
+{% endschema %}

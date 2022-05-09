@@ -1,0 +1,14 @@
+{
+    "sections": {
+        "heading": {
+            "type": "plp-header"
+        },
+        "list": {
+            "type": "plp-main"
+        }
+    },
+    "order": [
+        "heading",
+        "list"
+    ]
+}

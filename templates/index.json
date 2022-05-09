@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "hero": {
+      "type": "index-header"
+    },
+    "collections": {
+      "type": "index-collections"
+    },
+    "img_gallery_1": {
+      "type": "index-bestseller"
+    }
+  },
+  "order": [
+    "hero",
+    "collections",
+    "img_gallery_1"
+  ]
+}

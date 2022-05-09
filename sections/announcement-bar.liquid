@@ -1,0 +1,45 @@
+{{ 'style.announcement-bar.css' | asset_url | stylesheet_tag }}
+
+  {% for bar in section.blocks %}
+
+      <div class="container">
+        <div class="announcement-bar__inner">
+          <a class="announcement-bar__text" href="{{ bar.settings.announcement_link }}">{{ bar.settings.announcement }}</a>
+        </div>
+      </div>
+
+  {% endfor %}
+
+
+{% schema %}
+{
+  "name": "Announcement-bar",
+  "class": "announcement-bar",
+  "blocks": [
+    {
+      "type": "announce",
+      "name": "Announcement-bar block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "announcement",
+          "label": "Change announcement-bar here:",
+          "default": "20% OFF Sitewide until 9/12"
+        },
+        {
+          "type": "url",
+          "id": "announcement_link",
+          "label": "Change announcement-bar link here:"
+        }
+      ]
+    }
+  ],
+   "default": {
+    "blocks": [
+      {
+        "type": "announce"
+      }
+    ]
+  }
+}
+{% endschema %}

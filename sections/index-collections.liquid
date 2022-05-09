@@ -1,0 +1,102 @@
+{{ 'style.index-collections.css' | asset_url | stylesheet_tag }}
+{%- if section.blocks[0] -%}
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+    <div class="container">
+      <div class="mySwiper">
+        <div class="collections__inner swiper-wrapper">
+        
+            {% for block in section.blocks %}
+            {% for item in block.settings.collection %}
+                <a href="{{ item.url }}" class="collection swiper-slide">
+                    {% if item.image %}
+                    <img src="{{ item.image | image_url: width: 328, height: 334 }}" alt="{{ item.image.alt }}">
+                    {% endif %}
+                    <h2 class="text-12 collection__title">{{ item.title }}</h2>
+                </a>
+            {% endfor %}
+            {% endfor %}
+    
+            <div class="swiper-scrollbar"></div> 
+    
+        </div>
+      </div>
+    </div>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Initialize Swiper -->
+    <script>
+      var swiper = new Swiper(".mySwiper", {
+        slidesPerView: {{ section.settings.grid_column }},
+        spaceBetween: 16,
+        loop: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: true,
+        },
+        scrollbar: {
+          el: ".swiper-scrollbar",
+          hide: false,
+        },
+      });
+    </script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "collections settings",
+  "class": "collections",
+  "settings": [
+    {
+      	"type": "select",
+        "id": "grid_column",
+        "label": "Grid column number",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ],
+        "default": "3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chosen_collection",
+      "name": "featured slider",
+      "settings": [
+        {
+          "type": "collection_list",
+          "id": "collection",
+          "label": "some collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+        "name": "featured collections",
+        "blocks": [
+          {
+            "type": "chosen_collection"
+          }
+        ]
+    }
+  ]
+}
+{% endschema %}

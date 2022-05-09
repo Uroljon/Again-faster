@@ -1,0 +1,6 @@
+<h1>{{ page.title }}</h1>
+<div>{{ page.content }}</div>
+{% include "icon-cart" %}
+
+{{ content_for_index }}
+this tag shoud be present in settings_data.json which determines contents for index page. But it is the case of .liquid templates. Now We used index.json so we dont need content_for_index because page content and the order of contents are determined in json file. This makes all contents customisable throughout the webpage
