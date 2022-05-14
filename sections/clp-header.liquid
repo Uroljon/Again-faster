@@ -3,7 +3,7 @@
     <div class="clp_hero__left">
         <p class="text-12">{{ collection.metafields.accentuate.eyebrow }}</p>
         <h2 class="clp_hero__title">{{ collection.metafields.accentuate.title }}</h2>
-        <a class="clp_hero__btn btn" href="{{ collection.metafields.accentuate.cta_url }}" class="btn">{{ collection.metafields.accentuate.cta_label }} {% render "icon-right-arrow" %}</a>
+        <a class="btn btn--secondary" href="{{ collection.metafields.accentuate.cta_url }}" class="btn">{{ collection.metafields.accentuate.cta_label }} {% render "icon-right-arrow" %}</a>
     </div>
     <div class="clp_hero_right">
         <img class="clp_hero__img1" src="{{ collection.metafields.accentuate.image_1[0].cloudinary_src | append: 'w_570,h_790' }}" alt="image 1">

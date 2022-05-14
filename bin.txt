@@ -125,3 +125,56 @@
       <script> 
             console.log("{{ block.settings.c_row | last}}") 
         </script>
+
+        <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
+          
+          {{ current_variant.price | money }}
+          <label for="Quantity">quantity</label>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1">
+          <button type="submit" name="add" id="AddToCart">Add to cart</button>
+        </form>
+
+
+         <div class="loading-overlay__spinner hidden">
+              <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
+
+
+{{ variant.title }} - sold out -{{ option.position }}-{{ forloop.index0 }}
+
+
+  // let selectCallback = function (variant, selector) {
+  //   if (variant) {
+  //     if (variant.available) {
+  //       // Selected a valid variant that is available.
+  //       document.querySelector('#add-to-cart-button').removeClass('disabled').removeAttr('disabled').html('Add to Cart');
+  //     } else {
+  //       // Variant is sold out.
+  //       document.querySelector('#add-to-cart-button').html('Sold Out').addClass('disabled').attr('disabled', 'disabled');
+  //     }
+  //     // Whether the variant is in stock or not, we can update the price and compare at price.
+  //     if (variant.compare_at_price > variant.price) {
+  //       document.querySelector('#price-field').html('<span class="product-price on-sale">' + Shopify.formatMoney(variant.price, "") + '</span>' + '&nbsp;<s class="product-compare-price">' + Shopify.formatMoney(variant.compare_at_price, "") + '</s>');
+  //     } else {
+  //       document.querySelector('#price-field').html('<span class="product-price">' + Shopify.formatMoney(variant.price, "") + '</span>');
+  //     }
+  //   } else {
+  //     // variant doesn't exist.
+  //     document.querySelector('#add-to-cart-button').val('Unavailable').addClass('disabled').attr('disabled', 'disabled');
+  //   }
+  // }
+
+  // // initialize multi selector for product
+  // new Shopify.OptionSelectors('product-select', {
+  //   product: {{ product | json }},
+  //   onVariantSelected: selectCallback,
+  //   enableHistoryState: true
+  // });
+
+
+      {% for img in product.metafields.accentuate.product_custom_section_image %} 
+        <h3>{{ img[0].src }}</h3>
+        <p>-------------------------------</p>
+    {% endfor %}

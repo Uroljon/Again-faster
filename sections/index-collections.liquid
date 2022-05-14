@@ -17,12 +17,11 @@
                 </a>
             {% endfor %}
             {% endfor %}
-    
-            <div class="swiper-scrollbar"></div> 
-    
+            
+          </div>
         </div>
+      <div class="swiper-scrollbar"></div> 
       </div>
-    </div>
 
     <!-- Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -31,14 +30,14 @@
       var swiper = new Swiper(".mySwiper", {
         slidesPerView: {{ section.settings.grid_column }},
         spaceBetween: 16,
-        loop: true,
+        loop: false,
         autoplay: {
           delay: 2500,
           disableOnInteraction: true,
         },
         scrollbar: {
           el: ".swiper-scrollbar",
-          hide: false,
+          hide: true,
         },
       });
     </script>

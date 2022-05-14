@@ -5,20 +5,19 @@
   <h2 class="pdp_title suggestions__title">{{ section.settings.suggestion_title }}</h2>
     {% for block in section.blocks %}
       <div class="suggestions__grid grid-{{ block.settings.suggestions_column }}">
-      {% assign suggestions = block.settings.suggestions %}
-       {% for item in suggestions %}
-          {% include "product", item %}
-      {% else %}
-        <p>No products in this collection yet!</p>
-      {% endfor %}
-
+        {% assign suggestions = block.settings.suggestions %}
+        {% for item in suggestions %}
+            {% include "product", item %}
+        {% else %}
+          <p>No products in this collection yet!</p>
+        {% endfor %}
+      </div>
     {% endfor %}
-  </div>
 </div>
 
 {% schema %}
 {
-  "name": "Products grid",
+  "name": "Suggestions",
   "class": "suggestions",
   "settings": [
     {

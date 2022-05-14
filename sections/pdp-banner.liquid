@@ -1,0 +1,43 @@
+<div class="container">
+    {% for html in product.metafields.accentuate.product_custom_section_text %}
+    
+        <div class="info">
+            <div class="info-text">
+                {{ product.metafields.accentuate[html.metafield][html.index] }}
+            </div>
+            <img class="info-img" src="{{ product.metafields.accentuate.product_custom_section_image[forloop.index0][0].src }}" alt="{{ product.metafields.accentuate.product_custom_section_image[forloop.index0][0].handle }}">
+        </div>
+        
+    {% endfor %}
+
+</div>
+
+<script>
+    window.addEventListener("DOMContentLoaded", _=>{
+        document.querySelectorAll(".info").forEach(info=>{
+            if(!info.querySelector("p")){
+                info.querySelector("h2").classList.add("info__title--only")
+            }else{
+                if(info.querySelector("h2")){
+                    info.querySelector("h2").classList.add("info__title")
+                }
+                info.querySelectorAll("p").forEach(p=>{
+                    p.classList.add("info__text")
+                })
+            }
+            if(info.querySelector("ul") || info.querySelector("ol")){
+                info.querySelector("li").parentElement.classList.add("info__list")
+                info.querySelectorAll("li").forEach(li=>{
+                    li.classList.add("info__list__item")
+                })
+            }
+        })
+    })
+</script>
+
+{% schema %}
+{
+   "name": "Product additional info",
+   "class": "additional-info"
+}
+{% endschema %}

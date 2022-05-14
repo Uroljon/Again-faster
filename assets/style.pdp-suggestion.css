@@ -23,6 +23,12 @@
 }
 
 .product__img {
-    min-height: unset;
+    min-height: 27.5vw;
     max-height: 41rem;
+    overflow: hidden;
+}
+@media (min-width: 1450px) {
+    .product__img {
+        height: 41rem;
+    }
 }

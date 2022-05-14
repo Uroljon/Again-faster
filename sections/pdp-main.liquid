@@ -1,32 +1,198 @@
-
 {{ 'style.pdp.css' | asset_url | stylesheet_tag }}
+<!-- Link Swiper's CSS -->
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<!-- {% assign current_variant = product.selected_or_first_available_variant %} -->
+<!-- {% assign featured_image = current_variant.featured_image | default: product.featured_image %} -->
+{%- assign product_form_id = 'product-form-' | append: section.id -%}
 
-{% assign current_variant = product.selected_or_first_available_variant %}
-{% assign featured_image = current_variant.featured_image | default: product.featured_image %}
-<img src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">
-{% for image in product.images %}
-  <a href="{{ image.src | img_url: 'large' }}">
-    <img src="{{ image.src | img_url: 'compact' }}" alt="{{ image.alt | escape }}">
-  </a>
-{% endfor %}
-<h1>{{ product.title }}</h1>
-<form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
-  <select name="id" id="productSelect">
-    {% for variant in product.variants %}
-      {% if variant.available %}
-        <option value="{{ variant.id }}">
-          {{ variant.title }} - {{ variant.price | money_with_currency }}
-        </option>
-      {% else %}
-        <option disabled="disabled">
-          {{ variant.title }} - sold out
-        </option>
-      {% endif %}
-    {% endfor %}
-  </select>
-  {{ current_variant.price | money }}
-  <label for="Quantity">quantity</label>
-  <input type="number" id="Quantity" name="quantity" value="1" min="1">
-  <button type="submit" name="add" id="AddToCart">Add to cart</button>
-</form>
-<div>{{ product.description }}</div>
+<div class="container">
+  <div class="main-grid">
+    <div class="swiper-container">
+      <div class="carousel swiper">
+        <div class="swiper-wrapper">
+          {% for image in product.images %}
+          <div class="swiper-slide">
+            <img src="{{ image.src | image_url: width: 720, height: 900 }}" alt="{{ image.alt | escape }}">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="product">
+      <div class="product__inner">
+
+        <h1 class="text-24">{{ product.title }}</h1>
+        <p class="product__price">{{ product.price | money }}</p>
+        <div class="ratings">
+          {% assign limit = product.metafields.my_fields.rating.value | split: '.' %}
+          {% if limit %}
+          {% for i in (1..limit[0]) %}
+          {% render "icon-star" %}
+          {% endfor %}
+          {% endif %}
+          <span class="product__reviews">18 reviews</span>
+        </div>
+        <div class="product__affirm">
+          <img src="{% if section.settings.affirm_img %} {{ section.settings.affirm_img | img_url: " 40x16" }} {% else %} {{ "img-pdp-affirm.png" | asset_url }} {% endif %}" alt="logo" class="product__affirm__logo">
+          <a class="product__affirm__text" href="{{ section.settings.affirm_url }}">{{ section.settings.affirm }}</a>
+        </div>
+        <div>{{ product.description }}</div>
+        {%- form 'product', product, id: product_form_id, class: 'product-form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+        <fieldset class="variants" name="is_id">
+          {% for variant in product.variants %}
+
+          <input 
+            type="radio" 
+            id="{{ variant.id }}" 
+            class="variant-input" 
+            name="{{ product.options[0] }}" 
+            value="{{ variant.id }}" 
+            price="{{ variant.price | money}}" 
+            {% if variant==product.selected_or_first_available_variant %}checked{% endif %}
+            {% unless variant.available %}disabled{% endunless %}
+          >
+
+          <label for="{{ variant.id }}" class="variant-label {% unless variant.available %}disabled{% endunless %}">
+            {{ variant.title }}
+          </label>
+
+          {% endfor %}
+        </fieldset>
+        <!-- this is for form submit to work -->
+        <input id="product_size_master" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" selected="selected">
+        <input id="product_qty_master" type="hidden" name="quantity" min="1" value="1">
+        {% for tag in product.tags %}
+          {% if tag == "Free shipping" %}
+            <p class="free-shipping">{{ section.settings.free_shipping_text }}</p>
+          {% endif %}
+        {% endfor %}
+        <button type="submit" name="add" class="btn btn--submit" {% if product.selected_or_first_available_variant.available==false %}disabled{% endif %}>
+          {{ section.settings.submit_btn_text }}
+        </button>
+        {%- endform -%}
+
+        <div class="product__recommendations">
+          {%assign recs = product.metafields.accentuate.recommendations | split: '|'  %}
+          <h3 class="recommendation__title">{{ section.settings.bought_with }}</h3>
+
+          <div class="product__recommendations__row">
+            {% for rec in recs %}
+              <div class="product__recommendation">
+                <img class="product__recommendation__img" src="{{all_products[rec] | image_url: height: 125}}" alt="product image">
+                <div class="product__recommendation__info">
+                    <p>{{all_products[rec].title}}</p>
+                    <a href="{{all_products[rec].url}}">{{ section.settings.recommended_product_url_text }}</a>
+                  </div>
+              </div>
+            {% endfor %}
+            {{}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+  // <!-- Initialize Swiper -->
+  let swiper = new Swiper(".carousel", {
+    slidesPerView: 1,
+    spaceBetween: 0,
+    loop: true,
+    direction: "vertical",
+    autoplay: {
+      delay: 3500,
+      disableOnInteraction: true,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      // dynamicBullets: true,
+    },
+  });
+
+  document.querySelector(".product-form").addEventListener("change", e => {
+    document.querySelector(".product__price").textContent = document.querySelector(".variants input:checked").getAttribute("price");
+    document.querySelector("#product_size_master").value = document.querySelector(".variants input:checked").value;
+    document.querySelector("#product_qty_master").value = 1;
+  })
+
+// if product has no recommendations in metafield 
+  if (!document.querySelector(".product__recommendations__row").innerHTML.trim().length) {
+    fetch(window.Shopify.routes.root + "recommendations/products.json?section_id={{ section.id }}&product_id={{ product.id }}&limit=2")
+      .then(response => response.json())
+      .then(({ products }) => {
+        if (products.length > 0) {
+          products.forEach(el=>{
+            let img = el.featured_image;
+            document.querySelector(".product__recommendations__row").innerHTML += `
+            <div class="product__recommendation">
+                <img class="product__recommendation__img" src="https:${img}" alt="${el.title}">
+                <div class="product__recommendation__info">
+                    <p>${el.title}</p>
+                    <a href="${el.url}">{{ section.settings.recommended_product_url_text }}</a>
+                  </div>
+              </div>
+            `
+          })
+        }
+      }
+      );
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Main product section",
+  "settings": [
+    {
+    "type": "image_picker",
+    "id": "affirm_img",
+    "label": "Affirm logo"
+    },
+    {
+    "type": "text",
+    "id": "affirm",
+    "label": "Affirm text",
+    "default": "pay as low as 56/mo Learn More"
+    },
+    {
+    "type": "url",
+    "id": "affirm_url",
+    "label": "Affirm url"
+    },
+    {
+    "type": "text",
+    "id": "free_shipping_text",
+    "label": "Free shipping text",
+    "default": "Available for Free shipping!"
+    },
+    {
+    "type": "text",
+    "id": "submit_btn_text",
+    "label": "Submit button text",
+    "default": "Add to Cart"
+    },
+    {
+    "type": "text",
+    "id": "bought_with",
+    "label": "Suggestion title",
+    "default": "Frequently bought with"
+    },
+    {
+      "type": "product_list",
+      "id": "recommendations",
+      "label": "I would suggest using this instead of metafield"
+    },
+    {
+      "type": "text",
+      "id": "recommended_product_url_text",
+      "label": "Recommended product url text",
+      "default": "Add to Cart"
+    }
+  ]
+}
+{% endschema %}

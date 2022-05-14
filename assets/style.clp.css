@@ -19,20 +19,7 @@
 .clp_hero__btn svg path{
     fill: var(--black);
 }
-.clp_hero__btn:hover svg{
-    animation: flick 0.5s infinite forwards;
-}
-@keyframes flick {
-    0%{
-        transform: translate(0);
-    }
-    50%{
-        transform: translate(1rem);
-    }
-    100%{
-        transform: translate(0);
-    }
-}
+
 .collection img {
     width: 100%;
 }
@@ -49,7 +36,9 @@
     display: grid;
     align-items: center;
     grid-template-columns: 37.5% 1fr;
+    grid-template-rows: calc(100vh - 95px - 40px);
     gap: 0 5.8rem;
+    position: relative;
 }
 
 .clp_hero__title {
@@ -67,10 +56,11 @@
 }
 
 .clp_hero_right {
-    position: relative;
-    padding-bottom: 7.7rem;
+    align-self:flex-start;
 }
-
+.clp_hero__img1{
+    max-height: calc(100vh - 95px - 77px);
+}
 .clp_hero__img2 {
     position: absolute;
     bottom: 0;

@@ -23,3 +23,6 @@
 .collection__title {
     margin: 0.8rem 0 4rem;
 }
+.swiper-scrollbar{
+    height: 2px;
+}

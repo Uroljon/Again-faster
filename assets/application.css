@@ -7,6 +7,7 @@
     --gold: #C2A578;
     --red: #DA0000;
     --green: #6FCF97;
+    --footer-bg: #f1f1f1;
 }
 
 * {
@@ -89,6 +90,7 @@ body {
     width: 23.6rem;
     text-decoration: none;
     transition: 0.3s;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -97,8 +99,27 @@ body {
     border: 1px solid var(--black);
 }
 
+.btn--secondary {
+    color: var(--black);
+    border: 1px solid var(--black);
+    background-color: var(--white);
+}
+
+.btn--secondary:hover {
+    color: var(--white);
+    background-color: var(--black);
+}
+
+.btn--secondary svg path {
+    fill: var(--black);
+}
+
 .btn:hover svg path {
     fill: var(--black);
+}
+
+.btn--secondary:hover svg path {
+    fill: var(--white);
 }
 
 .btn--disabled {
@@ -115,12 +136,12 @@ body {
     padding: 0 0 0.8rem;
     border-bottom: 1px solid var(--black);
     text-decoration: none;
-    transition: 0.2s;
+    transition: 0.3s;
     display: inline-block;
 }
 
 .btn--small:hover {
-    transform: scale(1.05);
+    border-bottom: 1px solid transparent;
 }
 
 .grid-1 {
@@ -138,14 +159,17 @@ body {
 .grid-4 {
     grid-template-columns: repeat(4, 1fr);
 }
+
 .nav__logo {
     position: absolute;
     left: 0;
 }
-.nav__logo a{
+
+.nav__logo a {
     display: flex;
     align-items: center;
 }
+
 .nav__auth {
     position: absolute;
     display: flex;
@@ -196,13 +220,14 @@ body {
     color: var(--white);
 }
 
-:not(.template-index) .nav__auth path {
+body:not(.template-index) .nav__auth path {
     stroke: black;
 }
 
 footer {
     padding: 8rem 0 2.4rem;
     background-color: #f1f1f1;
+    position: relative;
 }
 
 .footer__inner {
@@ -220,6 +245,7 @@ footer {
 
 .footer__form {
     grid-column: 2 / 7;
+    z-index: 2;
 }
 
 .footer__links {
@@ -283,6 +309,14 @@ footer {
 
 .footer__social a {
     text-decoration: none;
+}
+
+.AF_logo {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    z-index: 0;
 }
 
 .copyright {

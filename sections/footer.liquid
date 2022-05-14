@@ -37,6 +37,10 @@
 
         </div>
         <p class="copyright">{{ section.settings.copyright }}</p>
+        <img class="AF_logo" src="{%- if section.settings.icon_AF != blank -%} 
+          {{ section.settings.icon_AF | image_url}} 
+          {%- else -%} {{ 'icon-AF.svg' | asset_url}} 
+        {%- endif -%}" />
     </div>
 </footer>
 
@@ -67,6 +71,11 @@
       "id": "copyright",
       "label": "Footer copyright change",
       "default": "©2020 Again Faster. All Rights Reserved"
+    },
+    {
+      "type": "image_picker",
+      "id": "icon_AF",
+      "label": "AF logo img"
     }
   ]
 

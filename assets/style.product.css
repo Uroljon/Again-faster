@@ -57,7 +57,9 @@
     display: flex;
     margin: 0.5rem 0 0.8rem;
 }
-
+.ratings svg{
+    margin-right: 0.4rem;
+}
 .products__grid {
     display: grid;
     gap: 2.4rem 1.6rem;
@@ -86,4 +88,10 @@
 .product__title{
     margin-top: 0.8rem;
     display: block;
+}
+@media (min-width: 1450px) {
+    .product__img {
+        height: 44.3rem;
+        min-height: unset;
+    }
 }
