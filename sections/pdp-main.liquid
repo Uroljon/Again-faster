@@ -23,7 +23,12 @@
       <div class="product__inner">
 
         <h1 class="text-24">{{ product.title }}</h1>
-        <p class="product__price">{{ product.price | money }}</p>
+        <p class="product__price">
+          <span>{{ product.price | money }}</span>
+          {% if product.compare_at_price %}
+            <span class="old_price">{{product.compare_at_price | money}}</span>
+          {% endif %}
+        </p>
         <div class="ratings">
           {% assign limit = product.metafields.my_fields.rating.value | split: '.' %}
           {% if limit %}
@@ -67,8 +72,12 @@
             <p class="free-shipping">{{ section.settings.free_shipping_text }}</p>
           {% endif %}
         {% endfor %}
-        <button type="submit" name="add" class="btn btn--submit" {% if product.selected_or_first_available_variant.available==false %}disabled{% endif %}>
-          {{ section.settings.submit_btn_text }}
+        <button type="submit" name="add" class="btn btn--submit">
+          {% if product.selected_or_first_available_variant.available==false %}
+            {{ section.settings.submit_btn_text_disabled }}
+            {% else %}
+            {{ section.settings.submit_btn_text }}
+          {% endif %}
         </button>
         {%- endform -%}
 
@@ -178,14 +187,15 @@
     },
     {
     "type": "text",
+    "id": "submit_btn_text_disabled",
+    "label": "Sold out button text",
+    "default": "Notify me when back in stock"
+    },
+    {
+    "type": "text",
     "id": "bought_with",
     "label": "Suggestion title",
     "default": "Frequently bought with"
-    },
-    {
-      "type": "product_list",
-      "id": "recommendations",
-      "label": "I would suggest using this instead of metafield"
     },
     {
       "type": "text",

@@ -38,3 +38,7 @@
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--gold);
 }
+.old_price{
+    opacity: 0.6;
+    text-decoration: line-through;
+}

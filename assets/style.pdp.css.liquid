@@ -50,7 +50,11 @@
 .product__price {
     margin-top: 0.8rem;
 }
-
+.old_price{
+    opacity: 0.6;
+    text-decoration: line-through;
+    margin-left: 8px;
+}
 .ratings {
     align-items: center;
 }
@@ -101,10 +105,10 @@
     padding: 1.6rem 0;
     text-align: center;
     cursor: pointer;
+    user-select: none;
 }
 
 .variant-label.disabled {
-    user-select: none;
     text-decoration: line-through;
     opacity: .5;
     cursor: not-allowed;

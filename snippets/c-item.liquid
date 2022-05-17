@@ -2,5 +2,5 @@
     {% if item.image %}
     <img src="{{ item.image | image_url: width: 328, height: 334 }}" alt="{{ item.image.alt }}">
     {% endif %}
-    <h2 class="text-12 collection__title">{{ item.title }}</h2>
+    <h2 class="text-12 collection__title">{{ item.title }} <span class="arrow">{% render "icon-right-arrow" %}</span></h2>
 </a>

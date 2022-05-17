@@ -16,6 +16,11 @@
     transition: 0.5s;
     transform: scale(1.05);
 }
+.collection:hover .collection__title .arrow{
+    transform: translate(0);
+    opacity: 1;
+}
+
 .collection img {
     width: 100%;
 }
@@ -25,4 +30,14 @@
 }
 .swiper-scrollbar{
     height: 2px;
+}
+.collection__title .arrow{
+    transition: 0.5s;
+    margin-left: 9px;
+    display: inline-block;
+    opacity: 0;
+    transform: translate(-1rem);
+}
+.collection__title .arrow path{
+    fill: var(--black);
 }

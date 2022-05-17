@@ -16,6 +16,10 @@
     border: 1px solid rgba(0, 0, 0, 0.247);
     transform: scale(1.05);
 }
+.collection:hover .collection__title .arrow{
+    transform: translate(0);
+    opacity: 1;
+}
 .clp_hero__btn svg path{
     fill: var(--black);
 }
@@ -27,7 +31,16 @@
 .collection__title {
     margin-top: 0.8rem;
 }
-
+.collection__title .arrow{
+    transition: 0.5s;
+    margin-left: 9px;
+    display: inline-block;
+    opacity: 0;
+    transform: translate(-0.5rem);
+}
+.collection__title .arrow path{
+    fill: var(--black);
+}
 .clp {
     margin-top: 4rem;
 }
