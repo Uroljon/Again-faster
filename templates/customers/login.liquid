@@ -1,28 +1,48 @@
-<!-- /templates/customers/login.liquid -->
+{{ 'style.customer.css' | asset_url | stylesheet_tag }}
+<div class="container container--form">
+    <div class="login_form">
+        {% form 'customer_login', class: "form" %}
+        <h2 class="text-24 form__title">Login</h2>
+        
+        <label class="form__label" for="customer_email">
+            <input class="form__input" type="email" name="customer[email]" size="30" required/>
+            <span>Email Address</span>
+        </label>
+        <label class="form__label" for="password">
+            <input class="form__input pass" type="password" name="customer[password]" required/>
+            <span>Password</span>
+        </label>
+        
+        <a href="#reset" class="form__reset_pass">Forgot Password</a>
 
-<h2>Login</h2>
-{% form 'customer_login' %}
+        {{ form.errors | default_errors }}
+        
+        <input type="submit" value="Sign In" class="btn btn--black form__btn" />
+    
+        {% endform %}
+    
+        <p class="login_option">Don’t have an account yet?</p>
+        <a href="{{ routes.account_register_url }}" class="btn btn--secondary">Create an account</a>
+    </div>
+    <div class="reset_form">
+        {% form 'recover_customer_password', class: "form" %}
+        <h2 class="text-24 form__title form__title--reset">Reset Password</h2>
+        <p class="reset_form__text">Enter your email below to receive an email to reset your password.</p>
+        {{ form.errors | default_errors }}
+        <label class="form__label" for="customer_email">
+            <input class="form__input" type="email" name="email" size="30" required/>
+            <span>Email Address</span>
+        </label>
+        <input type="submit" value="Reset Password" class="btn btn--black form__btn" />
+    
+        {% endform %}
+    </div>
+</div>
 
-{{ form.errors | default_errors }}
-
-<label for="customer_email">Email Address</label>
-<input type="email" name="customer[email]" />
-
-<label for="customer_password">Password</label>
-<input type="password" name="customer[password]" />
-
-<input type="submit" value="Sign In" />
-
-{% endform %}
-
-<h2>Forgot Password</h2>
-{% form 'recover_customer_password' %}
-
-{{ form.errors | default_errors }}
-
-<label for="customer_email">Email Address</label>
-<input type="email" name="email" />
-
-<input type="submit" value="Submit" />
-
-{% endform %}
+<script src="{{ 'script.customer.js' | asset_url }}" defer></script>
+<script>
+    document.querySelector(".form__reset_pass").addEventListener("click", (e)=>{
+        document.querySelector(".login_form").classList.add("hidden")
+        document.querySelector(".reset_form").classList.add("visible")
+    })
+</script>

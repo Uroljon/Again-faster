@@ -1,21 +1,38 @@
-<!-- /templates/customers/register.liquid -->
+{{ 'style.customer.css' | asset_url | stylesheet_tag }}
 
-{% form 'create_customer' %}
+<div class="container container--form">
+    <h2 class="text-24 form__title">Create an Account</h2>
+    <p class="error">Passwords don't match.</p>
+    {% form 'create_customer', class: "form" %}
+    {{ form.errors | default_errors }}
+    <div class="double_row">
+        <label class="form__label" for="first_name">
+            <input class="form__input" type="text" name="customer[first_name]" size="30" required/>
+            <span>First Name</span>
+        </label>
+        <label class="form__label" for="last_name">
+            <input class="form__input" type="text" name="customer[last_name]" size="30" required/>
+            <span>Last Name</span>
+        </label>
+    </div>
 
-{{ form.errors | default_errors }}
+    <label class="form__label" for="email">
+        <input class="form__input" type="email" name="customer[email]" size="30" required />
+        <span>Email Address</span>
+    </label>
 
-<label for="first_name">First Name</label>
-<input type="text" value="" name="customer[first_name]" size="30" />
+    <label class="form__label" for="password">
+        <input class="form__input pass" type="password" name="customer[password]" required/>
+        <span>Password</span>
+    </label>
+    <label class="form__label">
+        <input class="form__input check_pass" type="password" name="customer[password_confirmation]" required/>
+        <span>Confirm password</span>
+    </label>
+    <button type="submit" class="btn btn--black form__btn">Create an Account</button>
+    {% endform %}
+    <p class="login_option">Already have an account?</p>
+    <a href="{{ routes.account_login_url }}" class="btn btn--secondary">Log in</a>
+</div>
 
-<label for="last_name">Last Name</label>
-<input type="text" value="" name="customer[last_name]" size="30" />
-
-<label for="email">Email Address</label>
-<input type="email" value="" name="customer[email]" size="30" />
-
-<label for="password">Password</label>
-<input type="password" value="" name="customer[password]" size="30" />
-
-<input type="submit" value="Create" />
-
-{% endform %}
+<script src="{{ 'script.customer.js' | asset_url }}"></script>

@@ -1,8 +1,6 @@
 {{ 'style.pdp.css' | asset_url | stylesheet_tag }}
 <!-- Link Swiper's CSS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-<!-- {% assign current_variant = product.selected_or_first_available_variant %} -->
-<!-- {% assign featured_image = current_variant.featured_image | default: product.featured_image %} -->
 {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
 <div class="container">
@@ -123,11 +121,37 @@
     },
   });
 
-  document.querySelector(".product-form").addEventListener("change", e => {
-    document.querySelector(".product__price").textContent = document.querySelector(".variants input:checked").getAttribute("price");
-    document.querySelector("#product_size_master").value = document.querySelector(".variants input:checked").value;
-    document.querySelector("#product_qty_master").value = 1;
-  })
+document.querySelector(".product-form").addEventListener("change", e => {
+  document.querySelector(".product__price").textContent = document.querySelector(".variants input:checked").getAttribute("price");
+  document.querySelector("#product_size_master").value = document.querySelector(".variants input:checked").value;
+  document.querySelector("#product_qty_master").value = 1;
+})
+document.querySelector(".product-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  document.querySelector(".template-product").classList.add("waiting")
+  let formData = {
+    'items': [{
+      'id': document.querySelector("#product_size_master").value,
+      'quantity': document.querySelector("#product_qty_master").value
+      }]
+  };
+  let res = await fetch(window.Shopify.routes.root + 'cart/add.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    }
+  );
+  render_cart()
+  if(res.status < 400){
+    document.querySelector(".template-product").classList.remove("waiting")
+  }
+  document.querySelector(".cart").classList.add("active")
+})
 
 // if product has no recommendations in metafield 
   if (!document.querySelector(".product__recommendations__row").innerHTML.trim().length) {

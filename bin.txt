@@ -178,3 +178,25 @@
         <h3>{{ img[0].src }}</h3>
         <p>-------------------------------</p>
     {% endfor %}
+
+   // e.preventDefault()
+        // let formData = {
+        //     "customer[first_name]": "G'aybulla",
+        //     "customer[last_name]": "Sotvoldiyev",
+        //     "customer[email]": "gaybulla@gmail.com",
+        //     "customer[password]": "admin"
+        // };
+        // fetch("https://again-faster-uroljon.myshopify.com/account", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(formData)
+        // })
+        // .then(res => res.text())
+        // .then((data) => {
+        //     console.log(data)
+        // })
+        // .catch((error) => {
+        //     console.error('Error:', error);
+        // });
