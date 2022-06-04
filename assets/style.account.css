@@ -1,0 +1,276 @@
+.account {
+    padding: 7.8rem 0 14.6rem;
+    background: linear-gradient(to right, var(--light-grey) 25.55%, transparent 25.55%);
+}
+
+.account__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0 1.6rem;
+}
+
+.account__panel {
+    grid-column: 1 / 4;
+}
+
+.account__panel__title {
+    font-weight: 400;
+    margin-bottom: 4rem;
+}
+
+.account__nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    max-width: max-content;
+}
+
+.account__nav__link {
+    transition: 0.4s;
+    margin-bottom: 1.6rem;
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+    max-width: max-content;
+    user-select: none;
+    cursor: pointer;
+}
+
+.account__nav__link.active, .account__nav__link:hover {
+    border-bottom: 1px solid var(--gold);
+}
+.account__nav__link a{
+    color: inherit;
+    text-decoration: none;
+}
+.account__main {
+    grid-column: 5 / 11;
+}
+.account__main.address_book{
+    grid-column: 5 / -1;
+}
+
+.text-16 {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 168%;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.account_overview__orders {
+    padding: 2.7rem 0 4rem;
+}
+
+.row {
+    border-bottom: 1px solid var(--footer-bg);
+    display: grid;
+    /* gap: 10%; */
+    grid-template-columns: 30% 30% 1fr auto;
+    padding: 1.6rem 0 2.3rem;
+}
+
+.row>*:last-child {
+    justify-self: end;
+}
+
+.row__last {
+    text-align: right;
+}
+
+.order_link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.account_overview__heading {
+    padding-bottom: 0.8rem;
+    padding-top: 2.7rem;
+}
+
+.account__links__title {
+    margin-bottom: 2.4rem;
+}
+
+.account_overview h2 {
+    margin-top: 2.4rem;
+}
+.address_book h2{
+    margin-bottom: 2.7rem;
+}
+.address__title {
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 167.5%;
+    margin-bottom: 1.2rem;
+}
+.account__extra_info__btn{
+    display: block;
+    color: inherit;
+    margin-top: 4rem;
+}
+.pagination {
+    margin-top: 2.3rem;
+    text-align: center;
+}
+
+.pagination a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.pagination .next {
+    float: right;
+}
+
+.pagination .prev {
+    float: left;
+}
+
+.pagination .current {
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.text-normal {
+    text-transform: capitalize;
+    letter-spacing: unset;
+    line-height: 167.5%;
+}
+
+.order_details .row {
+    padding: 1.6rem 0;
+    grid-template-columns: 50% 0.5fr 1fr;
+    align-items: center;
+    justify-items: center;
+}
+.order_details .row>*:first-child {
+    justify-self: start;
+}
+.order_details__heading {
+    padding: 2.4rem 0 3.1rem;
+}
+.order__img{
+    display: flex;
+    background-color: var(--footer-bg);
+}
+.order__title a{
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 167.5%;
+    color: var(--black);
+    text-decoration: none;
+}
+.order__options{
+    list-style: none;
+}
+.order__option{
+    margin: 0.8rem 0;
+}
+.order__left{
+    display: flex;
+    gap: 0 1.6rem;
+}
+.order_info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.order__summary{
+    width: 45%;
+    margin-left: auto;
+    margin-top: 2.5rem;
+}
+.order_summary__item{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+}
+.order_summary__item--subtotal{
+    margin-top: 1.6rem;
+}
+.addresses{
+    display: flex;
+    gap: 0 10rem;
+}
+.order_details .address__title{
+    font-size: 1.6rem;
+    margin-bottom: 0;
+}
+.order_status{
+    margin: 0.8rem 0 0.9rem;
+}
+
+.btns{
+    margin: 1.6rem 0 3.6rem;
+    display: flex;
+    align-items: center;
+}
+.btns button{
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 10;
+    transition: 0.4s;
+}
+.btns button:hover{
+    color: red;
+}
+.d-none{
+    display: none;
+}
+.btn--black{
+    justify-content: center;
+    max-width: 21.3rem !important;
+}
+.address_book .addresses{
+    gap: 15%;
+}
+.address_book .text-16{
+    white-space: nowrap;
+}
+.address_book .pagination{
+    margin-top: 0;
+    margin-bottom: 3rem;
+}
+#cancel_address{
+    display: inline-block;
+    margin-left: 1.6rem;
+    cursor: pointer;
+}
+.d-flex{
+    align-items: center;
+}
+.edit_form{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    padding: 10% 0;
+    background-color: rgba(0, 0, 0, 0.842);
+    opacity: 0;
+    transition: 0.4s;
+    z-index: -10;
+}
+.edit_form__inner{
+    background-color: white;
+    width: 50%;
+    margin: auto;
+    padding: 3rem 5rem;
+}
+.edit_form.active{
+    opacity: 1;
+    z-index: 15;
+}
+
+.edit_form.active .form__label span{
+    z-index: initial;
+}
+.cancel_edit{
+    cursor: pointer;
+    margin-left: 2rem;
+}
+.edit_btn__seperator{
+    margin: 0 0.5rem;
+    display: block;
+}

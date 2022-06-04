@@ -1,4 +1,5 @@
 {{ 'style.pdp.css' | asset_url | stylesheet_tag }}
+{{ 'style.reviews.css' | asset_url | stylesheet_tag }}
 <!-- Link Swiper's CSS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 {%- assign product_form_id = 'product-form-' | append: section.id -%}
@@ -28,13 +29,19 @@
           {% endif %}
         </p>
         <div class="ratings">
-          {% assign limit = product.metafields.my_fields.rating.value | split: '.' %}
-          {% if limit %}
-          {% for i in (1..limit[0]) %}
-          {% render "icon-star" %}
-          {% endfor %}
-          {% endif %}
-          <span class="product__reviews">18 reviews</span>
+
+           <div class="yotpo bottomLine"
+              data-appkey="AcLnJ04gr9fNkJwfCm8ldwPiyjPDUS8Gv31BiAAn"
+              data-domain="{{shop.permanent_domain | escape }}"
+              data-product-id="{{ product.id }}"
+              data-product-models="{{ product.id }}"
+              data-name="{{ product.title | escape }}"
+              data-url="{{ shop.url }}{{ product.url }}"
+              data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
+              data-description="{{ product.description | escape }}"
+              data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}">
+          </div>
+
         </div>
         <div class="product__affirm">
           <img src="{% if section.settings.affirm_img %} {{ section.settings.affirm_img | img_url: " 40x16" }} {% else %} {{ "img-pdp-affirm.png" | asset_url }} {% endif %}" alt="logo" class="product__affirm__logo">
@@ -149,6 +156,11 @@ document.querySelector(".product-form").addEventListener("submit", async (e) => 
   render_cart()
   if(res.status < 400){
     document.querySelector(".template-product").classList.remove("waiting")
+  }else{
+    let msg = await res.json()
+    alert_error(msg.description)
+    document.querySelector(".template-product").classList.remove("waiting")
+    return
   }
   document.querySelector(".cart").classList.add("active")
 })

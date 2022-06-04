@@ -1,0 +1,71 @@
+<div class="review">
+  <div class="container">
+    <h2 class="pdp_title suggestions__title review__title">Reviews</h2>
+    <div class="review__top">
+      <div class="review__average">
+        <h3 class="review__index"></h3>
+        <div class="review__average__details yotpo">
+          <div class="d_stars"></div>
+          <p class="d_review"></p>
+        </div>
+      </div>
+      <div class="review__bars">
+        <div class="review__bar">
+          <div class="bar_item">5 stars</div>
+          <div class="bar_item bar_item--progress"><span class="actual"></span></div>
+          <div class="bar_item">(<span class="review_count5">0</span>)</div>
+        </div>
+        <div class="review__bar">
+          <div class="bar_item">4 stars</div>
+          <div class="bar_item bar_item--progress"><span class="actual"></span></div>
+          <div class="bar_item">(<span class="review_count4">0</span>)</div>
+        </div>
+        <div class="review__bar">
+          <div class="bar_item">3 stars</div>
+          <div class="bar_item bar_item--progress"><span class="actual"></span></div>
+          <div class="bar_item">(<span class="review_count3">0</span>)</div>
+        </div>
+        <div class="review__bar">
+          <div class="bar_item">2 stars</div>
+          <div class="bar_item bar_item--progress"><span class="actual"></span></div>
+          <div class="bar_item">(<span class="review_count2">0</span>)</div>
+        </div>
+        <div class="review__bar">
+          <div class="bar_item">1 star</div>
+          <div class="bar_item bar_item--progress"><span class="actual"></span></div>
+          <div class="bar_item">(<span class="review_count1">0</span>)</div>
+        </div>
+      </div>
+      <div class="review__btns">
+        <div class="write_review btn btn--black">Write a review</div>
+        <div class="ask_question btn btn--secondary ">Ask a question</div>
+      </div>
+    </div>
+    <div class="yotpo yotpo-main-widget" data-product-id="{{ product.id }}" data-name="{{ product.title | escape }}" data-url="{{ shop.url }}{{ product.url }}" data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}" data-price="{{ variant.price | money_without_currency }}" data-currency="{{ shop.currency }}" data-description="{{ product.description | escape }}">
+    </div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", e => {
+    const url = 'https://api-cdn.yotpo.com/v1/widget/AcLnJ04gr9fNkJwfCm8ldwPiyjPDUS8Gv31BiAAn/products/{{ product.id }}/reviews.json';
+    fetch(url).then(res => {
+      return res.json()
+    }).then(data => {
+      document.querySelector(".review__index").textContent = data.response.bottomline.average_score.toFixed(1)
+      data.response.reviews.forEach(rev => {
+        let old = document.querySelector(`.review_count${rev.score}`).textContent
+        document.querySelector(`.review_count${rev.score}`).textContent = Number(old) + 1;
+        let percent = (Number(old) + 1) * 100 / data.response.bottomline.total_review
+        document.querySelector(`.review_count${rev.score}`).parentElement.parentElement.querySelector(".actual").style.width = `${percent}%`
+      });
+      document.querySelector(".d_stars").innerHTML = document.querySelector(".yotpo-bottomline-box-1.yotpo-stars-and-sum-reviews .yotpo-stars").outerHTML;     
+      document.querySelector(".d_review").textContent = `${data.response.bottomline.total_review} reviews`;     
+
+    })
+  })
+  document.querySelector(".write_review").addEventListener("click", e => {
+    document.querySelector(".write-review-wrapper.write-form").classList.add("active", "visible");
+  })
+  
+</script>

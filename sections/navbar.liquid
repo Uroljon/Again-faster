@@ -30,6 +30,12 @@
     </div>
     {% render "cart" %}
 </nav>
+<div class="error">
+    <div class="error_box">
+        <div class="error_box__icon">{% render "icon-x" %}</div>
+        <div class="error_box__message">Error:</div>
+    </div>
+</div>
 
 <script>
     document.querySelector(".cart_btn").addEventListener("click", e=>{
@@ -65,7 +71,14 @@
             })
             .then(res=>{
                 res.json().then((changed)=>{
-                    document.querySelector(".cart_item__total").textContent = `$${(changed.items_subtotal_price/100).toFixed(2)}`
+                    let subtotal_price = changed.items.reduce((acc, cur)=>{
+                        if(cur.properties?._bundle_price){
+                            return acc + cur.properties._bundle_price
+                        }else{
+                            return acc + cur.final_line_price
+                        }
+                    }, 0) 
+                    document.querySelector(".cart_item__total").textContent = `$${(subtotal_price/100).toFixed(2)}`;
                     if(!changed.item_count){ empty_cart(); return }
                 })
             })
@@ -76,7 +89,7 @@
     }
     function update_cart(sign, target) {
         let item = target.parentElement.parentElement.parentElement;
-        let key = item.querySelector(".cart_item__remove").getAttribute("data-key")
+        let key = item.querySelector(".cart_item__remove").getAttribute("data-key");
         let qty = null;
         if (sign==="+"){
             qty = Number(target.previousElementSibling.textContent) + 1
@@ -103,7 +116,18 @@
         })
         .then(res=>{
             res.json().then((changed)=>{
-                document.querySelector(".cart_item__total").textContent = `$${(changed.items_subtotal_price/100).toFixed(2)}`;
+                if(res.status >= 400){
+                    alert_error(changed.description)
+                    return
+                }
+                let subtotal_price = changed.items.reduce((acc, cur)=>{
+                    if(cur.properties?._bundle_price){
+                        return acc + cur.properties._bundle_price
+                    }else{
+                        return acc + cur.final_line_price
+                    }
+                }, 0) 
+                document.querySelector(".cart_item__total").textContent = `$${(subtotal_price/100).toFixed(2)}`;
                 if(!changed.item_count){ empty_cart(); return }
 
                 let current = changed.items.find((item)=>item.key === key);
@@ -114,10 +138,12 @@
                     } else{
                         target.nextElementSibling.textContent = qty;
                     } 
-                    item.querySelector(".cart_item__price").textContent = `$${(current.original_line_price/100).toFixed(2)}`;
+                    
+                    item.querySelector(".cart_item__price").textContent = `$${((current.properties?._original_bundle_price || current.original_line_price)/100).toFixed(2)}`;
                 }else{
                     target.classList.add("not_allowed")
                     target.setAttribute("disabled", "")
+                    alert_error(`There are only ${current.quantity} ${current.product_title} in the stock!`)
                     return false
                 }
             })
@@ -146,8 +172,16 @@
         return res.json()
     })
     .then(cart_data=>{
+        
         document.querySelector(".cart__items").innerHTML = "";
-        document.querySelector(".cart_item__total").textContent = `$${(cart_data.items_subtotal_price/100).toFixed(2)}`;
+        let subtotal_price = cart_data.items.reduce((acc, cur)=>{
+            if(cur.properties?._bundle_price){
+                return acc + cur.properties._bundle_price
+            }else{
+                return acc + cur.final_line_price
+            }
+        }, 0) 
+        document.querySelector(".cart_item__total").textContent = `$${(subtotal_price/100).toFixed(2)}`;
 
         if(!cart_data.item_count){ empty_cart(); return }
 
@@ -173,7 +207,7 @@
                         </div>
                     </div>
                     <div class="cart_item__right">
-                        <div class="cart_item__price">$${(item.original_line_price/100).toFixed(2)}</div>
+                        <div class="cart_item__price">$${((item.properties?._original_bundle_price || item.original_line_price)/100).toFixed(2)}</div>
                         <button type="button" data-key="${item.key}" class="cart_item__remove">{% render "icon-x" %}</button>
                     </div>
                 </div>
@@ -185,6 +219,11 @@
         console.error('Error:', error);
     });
 }
+    function alert_error(e) {
+        document.querySelector(".error").classList.add("active")
+        document.querySelector(".error_box__message").textContent = e;
+        setTimeout(()=>{document.querySelector(".error").classList.remove("active")}, 3000)
+    }
 </script>
 
 {% schema %}

@@ -1,39 +1,170 @@
-<!-- /templates/customers/addresses.liquid -->
+{{ 'style.account.css' | asset_url | stylesheet_tag }}
+{{ 'style.customer.css' | asset_url | stylesheet_tag }}
 
-<h2>New Address</h2>
-{% form 'customer_address', customer.new_address %}
+<div class="account">
+  <div class="container">
+    <div class="account__grid">
+      <div class="account__panel">
+        <h2 class="text-24 account__panel__title">My Account</h2>
+        <ol class="account__nav">
+          <li class="account__nav__link"><a href="{{ routes.account_url }}">Account Overview</a></li>
+          <li class="account__nav__link"><a href="{{ customer.last_order.customer_url }}">Order Details</a></li>
+          <li class="account__nav__link active"><a href="{{ routes.account_addresses_url }}">Address Book</a></li>
+        </ol>
+      </div>
+      <div class="account__main address_book">
 
-{{ form.errors | default_errors }}
+        <div class="account__extra_info">
+          {% paginate customer.addresses by 3 %}
+          <div class="addresses">
 
-<label for="first_name">First Name</label>
-<input type="text" value="" name="address[first_name]" size="30" />
+            {% if customer.addresses.size != 0 %}
+            {% for address in customer.addresses %}
+              <div class="address" id="id_{{ address.id }}">
+                <h2 class="text-16">
+                  {% if address == customer.default_address %}
+                  Default Address
+                  {% else %}
+                  ADDRESS {{forloop.index}}
+                  {% endif %}
+                </h2>
 
-<label for="last_name">Last Name</label>
-<input type="text" value="" name="address[last_name]" size="30" />
+                <div class="address__title">{{ address.first_name }} {{ address.last_name }}</div>
+                <p class="address">{{ address.address1 }}</p>
+                {% if address.address2 != "" %}
+                <p>{{ address.address2 }}</p>
+                {% endif %}
+                <p>{{ address.city}}, {% if address.province_code %}{{ address.province_code }}, {% endif %}{{ address.province }}</p>
+                <p>{{ address.zip }}</p>
 
-<label for="company">Company</label>
-<input type="text" value="" name="address[company]" />
+                <div class="btns">
+                  <button class="edit_btn" data-target="{{address.id | handleize}}">Edit</button>
+                  <span class="edit_btn__seperator">|</span>
+                  <form method="post" action="/account/addresses/{{ address.id }}">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit">Delete</button>
+                  </form>
+                </div>
 
-<label for="address1">Address 1</label>
-<input type="text" value="" name="address[address1]" />
+                {% form 'customer_address', address, class: "edit_form form" %}
+                <div class="edit_form__inner">
+                  {{ form.errors | default_errors }}
+                  <div class="double_row">
+                    <label class="form__label" for="first_name">
+                      <input class="form__input" type="text" name="address[first_name]" size="30" value="{{ address.first_name }}" required />
+                      <span>First Name</span>
+                    </label>
+                    <label class="form__label" for="last_name">
+                      <input class="form__input" type="text" name="address[last_name]" size="30" value="{{ address.last_name }}" required />
+                      <span>Last Name</span>
+                    </label>
+                  </div>
+                  <label class="form__label" for="email">
+                    <input class="form__input" type="text" value="{{ address.address1 }}" name="address[address1]" size="30" required />
+                    <span>Address 1</span>
+                  </label>
+                  <label class="form__label" for="email">
+                    <input class="form__input" type="text" value="{{ address.address2 }}" name="address[address2]" size="30" required />
+                    <span>Address 2</span>
+                  </label>
+                  <div class="double_row">
+                    <label class="form__label" for="first_name">
+                      <input class="form__input" type="text" value="{{ form.city }}" name="address[city]" size="30" required />
+                      <span>City</span>
+                    </label>
+                    <label class="form__label" for="last_name">
+                      <input class="form__input" type="text" name="address[province]" size="30" value="{{ address.province }}" required />
+                      <span>State</span>
+                    </label>
+                  </div>
+                  <input class="d-none" type="hidden" value="United States" name="address[country]" size="30" required />
+                  <div class="d-flex">
+                    <input type="submit" class="btn btn--black" value="Confirm edit" />
+                    <p class="cancel_edit" data-target="{{address.id | handleize}}">Cancel edit</p>
+                  </div>
+                </div>
+                {% endform %}
 
-<label for="address2">Address 2</label>
-<input type="text" value="" name="address[address2]" />
+              </div>
 
-<label for="city">City</label>
-<input type="text" value="" name="address[city]" />
+            {% endfor %}
+            {% else %}
+            <p>You don't have any addresses yet.</p>
+            {% endif %}
+            
+          </div>
+          <div class="pagination">
+            {{ paginate | default_pagination: next: 'Next', previous: 'Previous' }}
+          </div>
+          {% endpaginate %}
+          <div class="btn btn--black" id="add_new_address">Add New Address</div>
+        </div>
+      </div>
+      <div class="account__main add_address d-none">
+        <h2 class="text-16">Add New Address</h2>
+        {% form 'customer_address', customer.new_address, class: "form" %}
 
-<!-- See docs for @shopify/theme-addresses to support Country and Province -->
-<label for="country">Country</label>
-<select name="address[country]" /></select>
+        {{ form.errors | default_errors }}
+        <div class="double_row">
+          <label class="form__label" for="first_name">
+            <input class="form__input" type="text" name="address[first_name]" size="30" required />
+            <span>First Name</span>
+          </label>
+          <label class="form__label" for="last_name">
+            <input class="form__input" type="text" name="address[last_name]" size="30" required />
+            <span>Last Name</span>
+          </label>
+        </div>
+        <label class="form__label" for="email">
+          <input class="form__input" type="text" value="" name="address[address1]" size="30" required />
+          <span>Address 1</span>
+        </label>
+        <label class="form__label" for="email">
+          <input class="form__input" type="text" value="" name="address[address2]" size="30" required />
+          <span>Address 2</span>
+        </label>
+        <div class="double_row">
+          <label class="form__label" for="first_name">
+            <input class="form__input" type="text" value="{{ form.city }}" name="address[city]" size="30" required />
+            <span>City</span>
+          </label>
+          <label class="form__label" for="last_name">
+            <input class="form__input" type="text" name="address[province]" size="30" required />
+            <span>State</span>
+          </label>
+        </div>
+        <input class="d-none" type="hidden" value="United States" name="address[country]" size="30" required />
 
-<label for="province">Province</label>
-<select name="address[province]" /></select>
+        <div class="d-flex">
+          <input type="submit" class="btn btn--black" value="Add New Address" />
+          <p id="cancel_address">Cancel</p>
+        </div>
 
-<label for="zip">Zip/Post Code</label>
-<input type="text" value="" name="address[zip]" />
+        {% endform %}
 
-<label for="phone">Phone Number</label>
-<input type="tel" value="" name="address[phone]" />
+      </div>
 
-{% endform %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelector("#add_new_address").addEventListener("click", e => {
+    document.querySelector(".address_book").classList.add("d-none")
+    document.querySelector(".add_address").classList.remove("d-none")
+  })
+  document.querySelector("#cancel_address").addEventListener("click", e => {
+    document.querySelector(".address_book").classList.remove("d-none")
+    document.querySelector(".add_address").classList.add("d-none")
+  })
+  document.querySelector(".addresses").addEventListener("click", e=>{
+    if(e.target.classList.contains("edit_btn")){
+      let parent = document.querySelector(`#id_${e.target.getAttribute("data-target")}`)
+      parent.querySelector(`.edit_form`).classList.add("active")
+    }else if(e.target.classList.contains("cancel_edit")){
+      let parent = document.querySelector(`#id_${e.target.getAttribute("data-target")}`)
+      parent.querySelector(`.edit_form`).classList.remove("active")
+    }
+  })
+</script>
+<script src="{{ 'script.customer.js' | asset_url }}" defer></script>

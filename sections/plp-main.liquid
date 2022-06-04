@@ -1,3 +1,4 @@
+{{ 'style.reviews.css' | asset_url | stylesheet_tag }}
 <div class="container">
   <div class="products__grid grid-{{ section.settings.grid_column }}">
     {% for product in collection.products %}
@@ -22,12 +23,17 @@
         </a>
         <a href="{{ product.url | within: collection }}" class="text-12 product__title">{{ product.title }}</a>
         <div class="ratings">
-          {% assign limit = product.metafields.my_fields.rating.value | split: '.' %}
-          {% if limit %}
-            {% for i in (1..limit[0]) %}
-              {% render "icon-star" %}
-            {% endfor %}
-          {% endif %}
+          <div class="yotpo bottomLine"
+              data-appkey="AcLnJ04gr9fNkJwfCm8ldwPiyjPDUS8Gv31BiAAn"
+              data-domain="{{shop.permanent_domain | escape }}"
+              data-product-id="{{ product.id }}"
+              data-product-models="{{ product.id }}"
+              data-name="{{ product.title | escape }}"
+              data-url="{{ shop.url }}{{ product.url }}"
+              data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
+              data-description="{{ product.description | escape }}"
+              data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}">
+          </div>
         </div>
         <p class="text-12">
           {% if product.compare_at_price %}
@@ -42,7 +48,26 @@
     {% endfor %}
   </div>
 </div>
-
+<script>
+  window.addEventListener("DOMContentLoaded", e=>{
+    setTimeout(function(params) {
+      document.querySelectorAll(".product").forEach(el=>{
+        if(!el.querySelector(".ratings .yotpo-stars")){
+          el.querySelector(".ratings").innerHTML = `<div class="yotpo bottomline">
+            <div class="yotpo-bottomline pull-left  star-clickable">  
+              <span class="yotpo-stars"> 
+                <span class="yotpo-icon yotpo-icon-empty-star pull-left"></span>
+                <span class="yotpo-icon yotpo-icon-empty-star pull-left"></span>
+                <span class="yotpo-icon yotpo-icon-empty-star pull-left"></span>
+                <span class="yotpo-icon yotpo-icon-empty-star pull-left"></span>
+                <span class="yotpo-icon yotpo-icon-empty-star pull-left"></span> 
+              </span>      
+            <div class="yotpo-clr"></div> </div></div><br>`
+        }
+      })
+    }, 300)
+  })
+</script>
 {% schema %}
 {
   "name": "Products grid",

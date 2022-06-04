@@ -1,0 +1,146 @@
+<!-- <style type="text/css"></style> -->
+<!-- <script type="text/javascript"></script> -->
+<div class="container">
+    <div class="bundle__wrapper">
+        {% if bundle.published %}
+        
+        
+            <div class="bundle__products">
+                {% for sec in bundle.sections %}
+                    <div class="product-box">
+                        <h1 class="product-box__title">{{ sec.name }}</h1>
+                        {% for product in sec.products %}
+                            <div class="product">
+                                <div class="product__img">
+                                    <img src="{{ product.image.src | image_url: width: 60, height: 90}}" />
+                                </div>
+                                <div class="product__info">
+                                    <h2 class="product__info__title">{{ product.title }}</h2>
+                                    {% add_to_bundle_form sec %}
+                                        <input type="hidden" name="variant" value="{{ product.available_variants[0].id }}" />
+                                        <span class="variant-price product__info__light-text">
+                                            {{ product.available_variants[0].title }} | {{ product.available_variants[0].price | money }} 
+                                        </span>
+                                        <button class="bundle_btn" type="submit" {% unless bundle.can_add_to_cart and bundle.content.items.size<12 %}disabled="disabled"{% endunless %}>+</button>
+                                    {% end_add_to_bundle_form %}
+                                </div>
+                                <div class="product__qty">
+                                    {% for variant in product.variants_in_bundle %}
+                                        {% change_quantity_form %}
+                                            <input type="hidden" name="variant" value="{{ variant.id }}" />
+                                            <input type="hidden" name="section" value="{{ sec.index }}" />
+                                            <button type="submit" name="remove">-</button>
+                                            {{ variant.count }}
+                                            <button class="increment_btn" type="submit" name="add" {% unless bundle.content.items.size<12 and bundle.can_add_to_cart %}disabled="disabled"{% endunless %}>+</button>
+                                        {% end_change_quantity_form %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        <!-- -------------------------------------------------------------------------- -->
+            <div class="bundle__summary">
+                <div class="bundle-content">
+                    <h2 class="bundle-content__title">your pack</h2>
+
+                    {% if bundle.errors.size > 0 %}
+                    <ul class="bundle__errors">
+                        {% for error in bundle.errors %}
+                        <li class="bundle__error">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    <p class="bundle-content__rules">
+                        {% if bundle.content.items.size == 0 %}Your bundle is empty.{% else %}Add 8 or more for free shipping.{% endif %}
+                    </p>
+                    <div class="grid_wrapper">
+                        <div class="bundle-content__grid">
+                            {% for i in (1..12) %}
+                                <div {% cycle 'class="bundle_box"', 'class="bundle_box"', 'class="bundle_box"', 'class="bundle_box last"' %}></div>
+                            {% endfor %}
+                        </div>
+                        <div class="bundle-content__grid bundle_images">
+                            {% for item in bundle.content.items limit: 12 %}
+                                <div class="bundle_item__wrapper">
+                                    <div class="bundle_item__remove">
+                                        {% remove_from_bundle_form item %}
+                                            <button type="submit">x</button>
+                                        {% end_remove_from_bundle_form %}
+                                    </div>
+                                    <div class="bundle_box"><img src="{{ item.variant.product.image.src }}" alt=""></div>
+                                    <h3 class="bundle_item__title">{{ item.variant.product.title }}</h3>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                   
+            
+                    {% if settings.note_enabled %}
+                        <div class="note-field--container">
+                            <label>{{ settings.note_label }}{% if settings.note_required %} (required){% endif %}</label>
+                            {% note_field %}{{ settings.note_text }}{% end_note_field %}
+                        </div>
+                        {% if settings.note_prompt_visible %}
+                            <div class="note-field--error-message">
+                                <p>Note required before adding to cart.</p>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+            
+                    {% add_to_cart_form %}
+                        {% if bundle.subscription_type == 'optional' and bundle.subscription_frequencies.size > 0 %}
+                            <label>
+                                <input type="radio" name="subscription-enabled" value="0" />
+                                One-time purchase
+                            </label>
+                            <label>
+                                <input type="radio" name="subscription-enabled" value="1" />
+                                Subscribe
+                            </label>
+                        {% endif %}
+                        {% if bundle.subscription_type == 'required' or bundle.subscription_enabled %}
+                            {% for frequency in bundle.subscription_frequencies %}
+                            <ul>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="subscription-frequency" value="{{ frequency.id }}" />
+                                        {{ frequency.frequency }} {{ frequency.unit }}
+                                    </label>
+                                </li>
+                            </ul>
+                            {% endfor %}
+                            Email: <input type="email" required name="subscription-email" value="{{ settings.subscription_email }}" />
+                        {% endif %}
+                        {% assign mod = bundle.content.items.size | modulo: 4 %}
+                        <button class="bundle_add_to_cart" type="submit" {% unless bundle.can_add_to_cart and mod==0 %} disabled="disabled" {% endunless %}>
+                            {% if bundle.adding_to_cart %}
+                                Processing...
+                            {% else %}
+                                <div class="item_count">{{bundle.content.items | size}}</div>
+                                    Add {% if mod == 0 %}bundle{% else %} more items {% endif %} to cart
+                            {% endif %}
+                        </button>
+                    {% end_add_to_cart_form %}
+                    
+            </div>
+            </div>
+        
+        
+        
+        
+        
+        {% else %}
+            <p>Sorry, this bundle is currently unavailable.</p>
+        {% endif %}
+    </div>
+</div>
+<script>
+    document.querySelector(".bundle__products").addEventListener("click", e=>{
+        if(e.target.classList.contains("increment_btn")){
+            console.log(e.target.getAttribute("bundle_items_count"))
+        }
+    })
+</script>
