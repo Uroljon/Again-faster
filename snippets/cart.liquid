@@ -1,4 +1,6 @@
-<form action="/cart" method="post" novalidate>
+{% capture bb_checkout_link %}{% render 'bb', type: 'bb_checkout_link' %}{% endcapture %}
+
+<form action="{% if bb_checkout_link != blank %}{{ bb_checkout_link }}{% else %}/cart{% endif %}" method="post" novalidate>
     <div class="cart">
         <div class="container">
             <div class="cart__inner">
@@ -22,4 +24,6 @@
             </div>
         </div>
     </div>
+    <input type="hidden" name="_cart" value="{{ cart | json | escape }}" />
+    <input type="hidden" name="_shop" value="{{ shop.permanent_domain | escape }}" />
 </form>
