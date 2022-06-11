@@ -59,7 +59,9 @@
         let percent = (Number(old) + 1) * 100 / data.response.bottomline.total_review
         document.querySelector(`.review_count${rev.score}`).parentElement.parentElement.querySelector(".actual").style.width = `${percent}%`
       });
-      document.querySelector(".d_stars").innerHTML = document.querySelector(".yotpo-bottomline-box-1.yotpo-stars-and-sum-reviews .yotpo-stars").outerHTML;     
+      setTimeout(()=>{
+        document.querySelector(".d_stars").innerHTML = document.querySelector(".yotpo-bottomline-box-1.yotpo-stars-and-sum-reviews .yotpo-stars").outerHTML;     
+      }, 2000)
       document.querySelector(".d_review").textContent = `${data.response.bottomline.total_review} reviews`;     
 
     })

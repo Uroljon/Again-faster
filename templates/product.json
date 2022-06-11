@@ -9,6 +9,9 @@
         "suggestion": {
             "type": "pdp-suggestion"
         },
+        "bundle": {
+            "type": "pdp-bundle"
+        },
         "reviews": {
             "type": "yotpo"
         }
@@ -17,6 +20,7 @@
         "main",
         "banner",
         "suggestion",
+        "bundle",
         "reviews"
     ]
 }

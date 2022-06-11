@@ -208,3 +208,6 @@
 .write-review-button.write-first-review-button{
     margin-bottom: 3rem;
 }
+.yotpo .yotpo-review .yotpo-header .yotpo-header-element .y-label.yotpo-user-title{
+    display: none;
+}
