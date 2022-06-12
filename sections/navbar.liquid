@@ -1,3 +1,6 @@
+{{ 'style.navbar.css' | asset_url | stylesheet_tag }}
+{{ 'style.cart.css' | asset_url | stylesheet_tag }}
+
 <nav>
     <div class="container">
         <div class="nav__inner">
@@ -254,13 +257,7 @@
     {
         "name": "Logo",
         "type": "nav_logo",
-        "settings": [
-            {
-                "type": "image_picker",
-                "id": "logo_img",
-                "label": "Logo img here"
-            }
-        ]
+        "settings": []
     },
     {
         "name": "Main navigation",

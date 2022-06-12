@@ -1,0 +1,104 @@
+/* Footer */
+footer {
+    padding: 8rem 0 2.4rem;
+    background-color: #f1f1f1;
+    position: relative;
+}
+
+.footer__inner {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0 1.6rem;
+}
+
+.footer__row {
+    display: flex;
+    justify-content: space-around;
+    gap: 1.6rem;
+    grid-column: 7 / -1;
+}
+
+.footer__form {
+    grid-column: 2 / 7;
+    z-index: 2;
+}
+
+.footer__links {
+    list-style: none;
+}
+
+.footer__link {
+    color: #7E7E7E;
+    text-decoration: none;
+    margin-bottom: 1.2rem;
+    display: inline-block;
+}
+
+.footer__link__title {
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    letter-spacing: 0.165em;
+    text-transform: uppercase;
+    color: #353535;
+    margin-bottom: 3rem;
+}
+
+.footer__input__wrapper {
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--grey);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 46rem;
+}
+
+.footer__input {
+    font-size: inherit;
+    line-height: 141.8%;
+    color: var(--black);
+    opacity: 0.5;
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+.footer__btn {
+    border: none;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+.footer__btn svg path {
+    fill: var(--black);
+}
+
+.footer__social {
+    display: flex;
+    gap: 1.6rem;
+    margin-top: 2.6rem;
+}
+
+.footer__social a {
+    text-decoration: none;
+}
+
+.AF_logo {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    z-index: 0;
+}
+
+.copyright {
+    text-align: center;
+    margin-top: 5.8rem;
+    font-weight: 300;
+    font-size: 1.2rem;
+    line-height: 167.5%;
+    color: var(--grey);
+}
