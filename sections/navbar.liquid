@@ -1,31 +1,38 @@
 <nav>
     <div class="container">
         <div class="nav__inner">
-            <div class="nav__logo  {% if template.name != "index" %} nav__logo--dark {% endif %}">
-                <a href="{{ routes.root_url }}">{% render "icon-logo" %}</a>
-            </div>
-            <ul class="nav__links">
-                {% for link in linklists.main-menu.links %}
-                <li><a href="{{ link.url }}" class="nav__link">{{ link.title }}</a></li>
-                {% endfor %}
-            </ul>
-            <div class="nav__auth">
-                {% if shop.customer_accounts_enabled %}
-                {% if customer %}
-                    <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
+            {% for item in section.blocks %}
+                {% if item.type == "nav_logo" %}
+                    <div class="nav__logo  {% if template.name != "index" %} nav__logo--dark {% endif %}">
+                        <a href="{{ routes.root_url }}">{% render "icon-logo" %}</a>
+                    </div>
+                {% elsif item.type == "nav_links" %}
+                    <ul class="nav__links">
+                        {% assign main_links = item.settings.link_main.links %}
+                        {% for link in main_links %}
+                            <li><a href="{{ link.url }}" class="nav__link">{{ link.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% elsif item.type == "nav_auth" %}
+                    <div class="nav__auth">
+                        {% if shop.customer_accounts_enabled %}
+                        {% if customer %}
+                            <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
 
-                    <a href="{{ routes.account_url }}">Account</a>
-                    <a href="{{ routes.account_logout_url }}">Log Out</a>
+                            <a href="{{ routes.account_url }}">Account</a>
+                            <a href="{{ routes.account_logout_url }}">Log Out</a>
 
-                    <a href="{{ routes.cart_url }}" class="cart_btn">{% render "icon-cart" %}</a>
-                {% else %}
-                    <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
-                    <a href="{{ routes.account_login_url }}">{% render "icon-account" %}</a>
-                    <a href="{{ routes.cart_url }}" class="cart_btn">{% render "icon-cart" %}</a>
+                            <a href="{{ routes.cart_url }}" class="cart_btn">{% render "icon-cart" %}</a>
+                        {% else %}
+                            <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
+                            <a href="{{ routes.account_login_url }}">{% render "icon-account" %}</a>
+                            <a href="{{ routes.cart_url }}" class="cart_btn">{% render "icon-cart" %}</a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    
                 {% endif %}
-                {% endif %}
-            </div>
-
+            {% endfor %}
         </div>
     </div>
     {% render "cart" %}
@@ -228,9 +235,55 @@
 
 {% schema %}
 {
-  "name": "Cart settings",
+  "name": "Navbar settings",
   "settings": [
-      
+      {
+        "id": "cart_title",
+        "type": "text",
+        "label": "Change cart title",
+        "default": "MY CART"
+      },
+      {
+          "id": "test",
+          "type": "checkbox",
+          "label": "Test checkbox", 
+          "default": false
+      }
+  ], 
+  "blocks": [
+    {
+        "name": "Logo",
+        "type": "nav_logo",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "logo_img",
+                "label": "Logo img here"
+            }
+        ]
+    },
+    {
+        "name": "Main navigation",
+        "type": "nav_links",
+        "settings": [
+            {
+                "type": "link_list",
+                "id": "link_main",
+                "label": "Main menu links"
+            }
+        ]
+    },
+    {
+        "name": "Account",
+        "type": "nav_auth",
+        "settings": [
+            {
+                "type": "link_list",
+                "id": "link_accounts",
+                "label": "Account links"
+            }
+        ]
+    }
   ]
 
 }

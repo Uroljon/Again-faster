@@ -13,7 +13,7 @@
 
 {% schema %}
 {
-  "name": "Announcement-bar",
+  "name": "Announcement-bar settings",
   "class": "announcement-bar",
   "blocks": [
     {
@@ -34,12 +34,16 @@
       ]
     }
   ],
-   "default": {
-    "blocks": [
-      {
-        "type": "announce"
-      }
-    ]
-  }
+  "presets": [
+    {
+      "name": "Announcement-bar",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "announce"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

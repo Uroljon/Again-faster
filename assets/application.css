@@ -166,8 +166,8 @@ body {
 }
 
 .nav__logo {
-    position: absolute;
-    left: 0;
+    /* position: absolute; */
+    /* left: 0; */
 }
 
 .nav__logo a {
@@ -176,9 +176,9 @@ body {
 }
 
 .nav__auth {
-    position: absolute;
+    /* position: absolute; */
     display: flex;
-    right: 0;
+    /* right: 0; */
     gap: 1.6rem;
 }
 
@@ -206,7 +206,7 @@ body {
     display: flex;
     list-style: none;
     justify-content: center;
-    width: 100%;
+    /* width: 100%; */
     gap: 4rem;
 }
 
