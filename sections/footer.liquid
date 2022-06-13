@@ -18,14 +18,10 @@
                 </div>
                 <div class="footer__social">
                   {% for item in section.blocks %}
-                    {% if item.type == "fb" %}
-                      <a href="{{item.settings.fb_link}}">{% render "icon-facebook" %}</a>
-                    {% endif %}
-                    {% if item.type == "ig" %}
-                      <a href="{{item.settings.ig_link}}">{% render "icon-instagram" %}</a>
-                    {% endif %}
-                    {% if item.type == "ml" %}
-                      <a href="{{item.settings.mail_link}}">{% render "icon-mail" %}</a>
+                    {% if item.type == "socials" %}
+                      <a href="{{item.settings.link1}}"><img src="{{item.settings.link1_src | image_url: width: 16}}" alt="social-icon"></a>
+                      <a href="{{item.settings.link2}}"><img src="{{item.settings.link2_src | image_url: width: 16}}" alt="social-icon"></a>
+                      <a href="{{item.settings.link3}}"><img src="{{item.settings.link3_src | image_url: width: 16}}" alt="social-icon"></a>
                     {% endif %}
                   {% endfor %}
                 </div>
@@ -45,16 +41,13 @@
 
         </div>
         <p class="copyright">{{ section.settings.copyright }}</p>
-        <img class="AF_logo" src="{%- if section.settings.icon_AF != blank -%} 
-          {{ section.settings.icon_AF | image_url}} 
-          {%- else -%} {{ 'icon-AF.svg' | asset_url}} 
-        {%- endif -%}" />
+        <img class="AF_logo" src="{%- if section.settings.icon_AF != blank -%}{{ section.settings.icon_AF | image_url}}{%- endif -%}" />
     </div>
 </footer>
 
 {% schema %}
 {
-  "name": "Footer",
+  "name": "Footer settings",
   "settings": [
     {
         "type": "text",
@@ -76,35 +69,39 @@
   ],
   "blocks": [
     {
-      "name": "Social media link 1",
-      "type": "fb",
+      "name": "Social media links",
+      "type": "socials",
+      "limit": 1,
       "settings": [
         {
-          "type": "url",
-          "id": "fb_link",
-          "label": "Facebook account link"
-        }
-      ]
-    },
-    {
-      "name": "Social media link 2",
-      "type": "ig",
-      "settings": [
+          "type": "image_picker",
+          "id": "link1_src",
+          "label": "Link 1 icon" 
+        },
         {
           "type": "url",
-          "id": "ig_link",
-          "label": "Instagram account link"
-        }
-      ]
-    },
-    {
-      "name": "Social media link 3",
-      "type": "ml",
-      "settings": [
+          "id": "link1",
+          "label": "Link 1" 
+        },
+        {
+          "type": "image_picker",
+          "id": "link2_src",
+          "label": "Link 2 icon" 
+        },
         {
           "type": "url",
-          "id": "mail_link",
-          "label": "Email link"
+          "id": "link2",
+          "label": "Link 2" 
+        },
+        {
+          "type": "image_picker",
+          "id": "link3_src",
+          "label": "Link 3 icon"
+        },
+        {
+          "type": "url",
+          "id": "link3",
+          "label": "Link 3"
         }
       ]
     },
@@ -122,18 +119,18 @@
   ],
   "presets": [
     {
-      "name": "Footer social links",
+      "name": "Footer",
       "settings": {
       },
       "blocks": [
         {
-          "type": "fb"
+           "type": "socials"
         },
         {
-          "type": "ig"
+            "type": "l_list"
         },
         {
-          "type": "ml"
+            "type": "l_list"
         }
       ]
     }

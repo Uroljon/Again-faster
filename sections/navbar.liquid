@@ -18,20 +18,21 @@
                     </ul>
                 {% elsif item.type == "nav_auth" %}
                     <div class="nav__auth">
+                        {% if item.settings.enable_search %}
+                            <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
+                        {% endif %}
                         {% if shop.customer_accounts_enabled %}
-                        {% if customer %}
-                            <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
-
-                            <a href="{{ routes.account_url }}">Account</a>
-                            <a href="{{ routes.account_logout_url }}">Log Out</a>
-
-                            <a href="{{ routes.cart_url }}" class="cart_btn">{% render "icon-cart" %}</a>
-                        {% else %}
-                            <a href="{{ routes.search_url }}">{% render "icon-search" %}</a>
-                            <a href="{{ routes.account_login_url }}">{% render "icon-account" %}</a>
-                            <a href="{{ routes.cart_url }}" class="cart_btn">{% render "icon-cart" %}</a>
+                            <div class="account">
+                                <a href="{{ routes.account_login_url }}">{% render "icon-account" %}</a>
+                                {% if customer %}
+                                    <div class="account__links">
+                                        <a href="{{ routes.account_url }}">Account</a>
+                                        <a href="{{ routes.account_logout_url }}">Log Out</a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         {% endif %}
-                        {% endif %}
+                        <a href="{{ routes.cart_url }}" class="cart_btn">{% render "icon-cart" %}</a>
                     </div>
                     
                 {% endif %}
@@ -245,12 +246,6 @@
         "type": "text",
         "label": "Change cart title",
         "default": "MY CART"
-      },
-      {
-          "id": "test",
-          "type": "checkbox",
-          "label": "Test checkbox", 
-          "default": false
       }
   ], 
   "blocks": [
@@ -275,9 +270,9 @@
         "type": "nav_auth",
         "settings": [
             {
-                "type": "link_list",
-                "id": "link_accounts",
-                "label": "Account links"
+                "type": "checkbox",
+                "id": "enable_search",
+                "label": "Enable search box"
             }
         ]
     }

@@ -14,7 +14,27 @@
     text-decoration: none;
     color: var(--black);
 }
-
+.account{
+    position: relative;
+}
+.account:hover .account__links{
+    transform: scale(1);
+}
+.account__links{
+    position: absolute;
+    top: 2rem;
+    transform: scale(0);
+    left: -4rem;
+    transition: 0.4s;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+.template-index .account__links{
+    background-color: black;
+}
 .nav__inner {
     position: relative;
     display: flex;

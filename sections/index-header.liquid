@@ -1,24 +1,34 @@
 {{ 'style.index-header.css' | asset_url | stylesheet_tag }}
 <style>
 header {
-  background: url("{%- if section.settings.hero__bg != blank -%} {{ section.settings.hero__bg | image_url }} {%- else -%} {{ 'hero.jpg' | asset_url}} {%- endif -%}") no-repeat center center /cover;
+  background:{%- if section.settings.hero__bg != blank -%} url(" {{ section.settings.hero__bg | image_url }} ") no-repeat center center /cover {% else %} {{ section.settings.hero_bg_color }} {%- endif -%}; 
 }
 </style>
 <header>
   <div class="container">
     <div class="hero">
       <h1 class="hero__title">{{ section.settings.hero__title }}</h1>
-      <p class="hero__text">{{ section.settings.hero__text }}</p>
+      <div class="hero__text">{{ section.settings.hero__text }}</div>
       <a class="btn" href="{{ section.settings.hero__btn__url }}">{{ section.settings.hero__btn }} {% render "icon-right-arrow" %}</a>
     </div>
   </div>
 </header>
 
-
 {% schema %}
 {
-  "name": "Hero",
+  "name": "Hero section",
   "settings": [
+    {
+      "type": "color_background",
+      "id": "hero_bg_color",
+      "label": "Hero background color",
+      "default": "linear-gradient(grey, #000000)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero__bg",
+      "label": "Hero img change"
+    },
     {
       "type": "text",
       "id": "hero__title",
@@ -26,10 +36,10 @@ header {
       "default": "Team barbell"
     },
     {
-      "type": "text",
+      "type": "richtext",
       "id": "hero__text",
       "label": "Hero text change",
-      "default": "Team Barbell was to design a piece of equipment that matches the performance and quality of other elite level competition bars."
+      "default": "<p>Team Barbell was to design a piece of equipment that matches the performance and quality of other elite level competition bars.</p>"
     },
     {
       "type": "text",
@@ -41,12 +51,7 @@ header {
       "type": "url",
       "id": "hero__btn__url",
       "label": "Hero button url change"
-    },
-    {
-      "type": "image_picker",
-      "id": "hero__bg",
-      "label": "Hero img change"
-    }
+    }    
   ]
 
 }

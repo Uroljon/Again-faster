@@ -4,6 +4,7 @@
 
 .mySwiper {
     overflow-x: hidden;
+    position: relative;
 }
 
 .collection {
@@ -28,7 +29,9 @@
 .collection__title {
     margin: 0.8rem 0 4rem;
 }
+
 .swiper-scrollbar{
+    position: relative !important;
     height: 2px;
 }
 .collection__title .arrow{

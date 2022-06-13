@@ -1,28 +1,45 @@
 {{ 'style.index-bestseller.css' | asset_url | stylesheet_tag }}
+{% style %}
+  {% unless section.settings.right %}
+    .bestseller__right__img {
+      background: {{ section.settings.right_bg }};
+      max-width: 46.2rem;
+      height: 62.8rem;
+      width: 100%;
+    }
+  {% endunless %}
+  {% unless section.settings.left %}
+    .bestseller__left{
+      max-width: 82.7rem;
+      height: 102.4rem;
+      width: 100%;
+      background: {{ section.settings.left_bg }};
+    }
+  {% endunless %}
+{% endstyle %}
 
   <div class="container-fluid">
     <div class="bestseller__inner">
         <div class="bestseller__left">
-        <img src="{%- if section.settings.left != blank -%} 
-                    {{ section.settings.left | image_url}} 
-                    {%- else -%} {{ 'bestseller_left.jpg' | asset_url}} 
-                  {%- endif -%}" />
+          {%- if section.settings.left != blank -%}
+            <img src=" {{ section.settings.left | image_url}}" />
+          {%- endif -%}
         </div>
         <div class="bestseller__right">
             <div class="bestseller__right__inner">
-              <img src="{%- if section.settings.right != blank -%} 
-                          {{ section.settings.right | image_url}} 
-                          {%- else -%} {{ 'bestseller_right.jpg' | asset_url}} 
-                        {%- endif -%}" />
-                <div class="text-12 bestseller__subtitle">{{ section.settings.subtitle }}</div>
-                <h2 class="text-24 bestseller__title">{{ section.settings.title }}</h2>
-                <p class="bestseller__text">{{ section.settings.text }}</p>
-                <a href="{{ section.settings.button_url }}" class="btn--small">{{ section.settings.button }}</a>
+              <div class="bestseller__right__img">
+                {%- if section.settings.right != blank -%} 
+                  <img src="{{ section.settings.right | image_url}}" />
+                {%- endif -%}
+              </div>
+              <div class="text-12 bestseller__subtitle">{{ section.settings.subtitle }}</div>
+              <h2 class="text-24 bestseller__title">{{ section.settings.title }}</h2>
+              <p class="bestseller__text">{{ section.settings.text }}</p>
+              <a href="{{ section.settings.button_url }}" class="btn--small">{{ section.settings.button }}</a>
             </div>
         </div>
     </div>
   </div>
-
 
 {% schema %}
 {
@@ -31,9 +48,21 @@
   "class": "bestseller",
   "settings": [
     {
+      "type": "color_background",
+      "id": "left_bg",
+      "label": "Bestseller left side image bg",
+      "default": "linear-gradient(#ffffff, #000000)"
+    },
+    {
       "type": "image_picker",
       "id": "left",
       "label": "Bestseller left side image change"
+    },
+    {
+      "type": "color_background",
+      "id": "right_bg",
+      "label": "Bestseller right side image bg",
+      "default": "linear-gradient(#ffffff, #000000)"
     },
     {
       "type": "image_picker",
@@ -72,7 +101,7 @@
   ],
   "presets": [
     {
-        "name": "Bestseller section"
+        "name": "Bestsellers"
     }
   ]
 

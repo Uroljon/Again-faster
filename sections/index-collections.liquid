@@ -1,27 +1,25 @@
 {{ 'style.index-collections.css' | asset_url | stylesheet_tag }}
-{%- if section.blocks[0] -%}
+{%- if section.settings.collection -%}
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
-    {% for block in section.blocks %}
-      <div class="container">
-        <div class="mySwiper">
-          <div class="collections__inner swiper-wrapper">
-          
-              {% for item in block.settings.collection %}
-                  <a href="{{ item.url }}" class="collection swiper-slide">
-                      {% if item.image %}
-                      <img src="{{ item.image | image_url: width: 328, height: 334 }}" alt="{{ item.image.alt }}">
-                      {% endif %}
-                      <h2 class="text-12 collection__title">{{ item.title }} <span class="arrow">{% render "icon-right-arrow" %}</span></h2>
-                  </a>
-              {% endfor %}
-              
-          </div>
+    <div class="container">
+      <div class="mySwiper">
+        <div class="collections__inner swiper-wrapper">
+        
+            {% for item in section.settings.collection %}
+                <a href="{{ item.url }}" class="collection swiper-slide">
+                    {% if item.image %}
+                    <img src="{{ item.image | image_url: width: 328, height: 334 }}" alt="{{ item.image.alt }}">
+                    {% endif %}
+                    <h2 class="text-12 collection__title">{{ item.title }} <span class="arrow">{% render "icon-right-arrow" %}</span></h2>
+                </a>
+            {% endfor %}
+            
         </div>
-        <div class="swiper-scrollbar"></div> 
       </div>
-    {% endfor %}
+      <div class="swiper-scrollbar"></div> 
+    </div>
 
     <!-- Swiper JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -37,7 +35,7 @@
         },
         scrollbar: {
           el: ".swiper-scrollbar",
-          hide: true,
+          hide: false,
         },
       });
     </script>
@@ -46,7 +44,7 @@
 
 {% schema %}
 {
-  "name": "collections settings",
+  "name": "Featured collection",
   "class": "collections",
   "settings": [
     {
@@ -72,29 +70,17 @@
           }
         ],
         "default": "3"
-    }
-  ],
-  "blocks": [
+    },
     {
-      "type": "chosen_collection",
-      "name": "featured slider",
-      "settings": [
-        {
-          "type": "collection_list",
-          "id": "collection",
-          "label": "some collection"
-        }
-      ]
+      "type": "collection_list",
+      "id": "collection",
+      "label": "some collection"
     }
+
   ],
   "presets": [
     {
-        "name": "featured collections",
-        "blocks": [
-          {
-            "type": "chosen_collection"
-          }
-        ]
+        "name": "Featured collections"
     }
   ]
 }
