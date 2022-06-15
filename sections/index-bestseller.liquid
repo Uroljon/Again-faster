@@ -22,14 +22,14 @@
     <div class="bestseller__inner">
         <div class="bestseller__left">
           {%- if section.settings.left != blank -%}
-            <img src=" {{ section.settings.left | image_url}}" />
+            <img src=" {{ section.settings.left | image_url: height: 1024 }}" />
           {%- endif -%}
         </div>
         <div class="bestseller__right">
             <div class="bestseller__right__inner">
               <div class="bestseller__right__img">
                 {%- if section.settings.right != blank -%} 
-                  <img src="{{ section.settings.right | image_url}}" />
+                  <img src="{{ section.settings.right | image_url: height: 628 }}" />
                 {%- endif -%}
               </div>
               <div class="text-12 bestseller__subtitle">{{ section.settings.subtitle }}</div>

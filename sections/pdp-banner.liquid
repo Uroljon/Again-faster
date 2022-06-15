@@ -1,3 +1,10 @@
+{% if section.settings.icon_slash %}
+<style>
+    .info__list__item::before {
+        background: url("{{ section.settings.icon_slash | image_url: width: 10 }}") no-repeat center center;
+    }
+</style>
+{% endif %}
 <div class="container">
     {% for html in product.metafields.accentuate.product_custom_section_text %}
     
@@ -38,6 +45,13 @@
 {% schema %}
 {
    "name": "Product additional info",
-   "class": "additional-info"
+   "class": "additional-info",
+   "settings":[
+      {
+       "type": "image_picker",
+       "id": "icon_slash",
+       "label": "Slash icon"
+      }
+   ]
 }
 {% endschema %}

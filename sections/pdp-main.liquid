@@ -29,7 +29,6 @@
           {% endif %}
         </p>
         <div class="ratings">
-
            <div class="yotpo bottomLine"
               data-appkey="AcLnJ04gr9fNkJwfCm8ldwPiyjPDUS8Gv31BiAAn"
               data-domain="{{shop.permanent_domain | escape }}"
@@ -44,7 +43,9 @@
 
         </div>
         <div class="product__affirm">
-          <img src="{% if section.settings.affirm_img %} {{ section.settings.affirm_img | img_url: " 40x16" }} {% else %} {{ "img-pdp-affirm.png" | asset_url }} {% endif %}" alt="logo" class="product__affirm__logo">
+          {% if section.settings.affirm_img %}
+            <img src=" {{ section.settings.affirm_img | image_url: width: 40 }}" alt="logo" class="product__affirm__logo">
+          {% endif %}
           <a class="product__affirm__text" href="{{ section.settings.affirm_url }}">{{ section.settings.affirm }}</a>
         </div>
         <div>{{ product.description }}</div>
@@ -108,7 +109,6 @@
     </div>
   </div>
 </div>
-
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>

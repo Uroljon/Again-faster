@@ -4,16 +4,16 @@
 <div class="container">
     <h1 class="text-24">{{ section.settings.title }}</h1>
     {%- if section.blocks[0] -%}
-        {% for block in section.blocks %}
         <ul class="collections">
-            {% for item in block.settings.c_row %}
-            <li>
-                <a href="{{ item.url }}" class="collection {% if collection.title==item.title %} active {% endif %}"> <span class="collection__title">{{ item.title }}</span> <span class="slash"> / </span> </a>
-            </li>
+            {% for block in section.blocks %}
+                {% if block.type == "c-row" %}
+                    {% assign item = block.settings.c_row %}
+                    <li>
+                        <a href="{{ item.url }}" class="collection {% if collection.title==item.title %} active {% endif %}"> <span class="collection__title">{{ item.title }}</span> <span class="slash"> / </span> </a>
+                    </li>
+                {% endif %}
             {% endfor %}
-    
         </ul>
-        {% endfor %}
     {%- endif -%}
 </div>
 
@@ -32,12 +32,12 @@
         {
             "type": "c-row",
             "name": "Collections row",
+            "limit": 8,
             "settings": [
                 {
-                    "type": "collection_list",
+                    "type": "collection",
                     "id": "c_row",
-                    "label": "Collections row",
-                    "limit": 8
+                    "label": "collection"
                 }
             ]
         }

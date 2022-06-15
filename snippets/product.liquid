@@ -24,12 +24,17 @@
     </a>
     <a href="{{ item.url }}" class="text-12 product__title">{{ item.title }}</a>
     <div class="ratings">
-    {% assign limit = item.metafields.my_fields.rating.value | split: '.' %}
-    {% if limit %}
-        {% for i in (1..limit[0]) %}
-        {% render "icon-star" %}
-        {% endfor %}
-    {% endif %}
+     <div class="yotpo bottomLine"
+        data-appkey="AcLnJ04gr9fNkJwfCm8ldwPiyjPDUS8Gv31BiAAn"
+        data-domain="{{shop.permanent_domain | escape }}"
+        data-product-id="{{ product.id }}"
+        data-product-models="{{ product.id }}"
+        data-name="{{ product.title | escape }}"
+        data-url="{{ shop.url }}{{ product.url }}"
+        data-image-url="{{ product.featured_image | product_img_url: 'large' |replace: '?', '%3F' | replace: '&','%26'}}"
+        data-description="{{ product.description | escape }}"
+        data-bread-crumbs="{% for tag in product.tags %}{{ tag | escape }};{% endfor %}">
+    </div>
     </div>
     <p class="text-12">{{ item.price | money }}</p>
 </div>

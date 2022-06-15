@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "name": "Affirm logo",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "affirm_img",
+                "label": "Affirm logo"
+            }
+        ]
+    }
+]

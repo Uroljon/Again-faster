@@ -16,7 +16,9 @@
                     </div>
                     <div class="tax">Tax and shipping calculates at checkout.</div>
                     <div class="affirm">
-                        <img src="{{ " img-pdp-affirm.png" | asset_url}}" alt="afirm">
+                        {% if settings.affirm_img %}
+                            <img src=" {{ settings.affirm_img | image_url: width: 40 }}" alt="logo">
+                        {% endif %}
                         <a class="affirm_link" href="#!">pay as low as 56/mo Learn More</a>
                     </div>
                     <button class="btn--checkout" type="submit" name="checkout">Continue to Checkout</button>

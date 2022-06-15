@@ -14,8 +14,10 @@
     text-decoration: none;
     color: var(--black);
 }
-.account{
+nav .account{
     position: relative;
+    padding: 0;
+    margin: 0;
 }
 .account:hover .account__links{
     transform: scale(1);
