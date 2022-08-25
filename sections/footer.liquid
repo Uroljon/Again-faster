@@ -5,6 +5,7 @@
         <div class="footer__inner">
             {% form 'customer', class: "footer__form" %}
                 <h3 class="footer__link__title">{{ section.settings.footer_link_title_news }}</h3>
+                {{ form.errors | default_errors }}
                 <div class="footer__input__wrapper">
                     <input 
                       type="email" 
@@ -14,6 +15,22 @@
                       placeholder="Enter your email" 
                       value="{{ form.email }}" 
                       aria-required="true">
+
+                    <div class="field field--double">
+
+                      <label class="ctm_checkbox">
+                        <input type="checkbox" name="contact[tags]" class="check_box check_box--news" data-target="womens_jewelry">
+                        <!-- <input type="hidden" name="contact[tags]" value=""> -->
+                        <span>women</span>
+                      </label>
+                      <label class="ctm_checkbox">
+                        <input type="checkbox" name="contact[tags]" class="check_box check_box--news" data-target="mens_jewelry">
+                        <input type="hidden" name="contact[tags]" value="" class="check_box--last">
+                        <!-- <input type="hidden" name="customer[tags]" value="VIP" class="check_box"> -->
+                        <span>man</span>
+                      </label>
+
+                    </div>
                     <button type="submit" class="footer__btn">{% render "icon-right-arrow" %}</button>
                 </div>
                 <div class="footer__social">
@@ -44,7 +61,34 @@
         <img class="AF_logo" src="{%- if section.settings.icon_AF != blank -%}{{ section.settings.icon_AF | image_url}}{%- endif -%}" />
     </div>
 </footer>
+<script>
+  document.querySelector(".footer__form").addEventListener("change", e=>{
+    if(e.target.classList.contains("check_box--news")){
+      if (document.querySelectorAll(".check_box--news:checked").length>=2) {
+        console.log("both selected")
+        document.querySelector(".check_box--last").value = "womens_jewelry, mens_jewelry"
+      }else{
+        if (e.target.checked) {
+          document.querySelector(".check_box--last").value = e.target.getAttribute("data-target")
+          console.log(document.querySelector(".check_box--last"), document.querySelector(".check_box--last").value, "yes data")
+          // e.target.nextElementSibling.value = e.target.getAttribute("data-target")
+          // e.target.insertAdjacentHTML("afterend", `<input type="hidden" name="contact[tags]" value="${e.target.getAttribute("data-target")}">`)
+        }else{
+          // e.target.nextElementSibling.value = ""
+          document.querySelector(".check_box--last").value = ""
+          console.log(document.querySelector(".check_box--last"), document.querySelector(".check_box--last").value, "no data")
+        }
+      }
+    }
+    // if(e.target.getAttribute("data-target") === "womens_jewelry"){
+    //   if(e.target.checked){
+    //   }
+    // }else if(e.target.classList.contains("m")){
+    //   console.log("m")
+    // }
 
+  })
+</script>
 {% schema %}
 {
   "name": "Footer settings",

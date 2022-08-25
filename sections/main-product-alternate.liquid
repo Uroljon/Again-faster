@@ -1,0 +1,513 @@
+{{ 'main-product-alternate.css' | asset_url | stylesheet_tag }}
+
+<link rel="stylesheet"  href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+<style>
+  .style-alt .rte ul li::before{
+    content: "";
+    display: inline-block;
+    margin-right: 12px;
+    width: 9px;
+    height: 9px;
+    background: url('{{ section.settings.list_bullet_img | image_url: width: 9 }}') no-repeat center center ;
+  }
+  .style-alt .rte ul:last-child li:nth-child(1):before{
+    background: url('{{ section.settings.list_email_img | image_url: width: 24 }}') no-repeat center center ;
+  }
+  .style-alt .rte ul:last-child li:nth-child(2):before{
+    background: url('{{ section.settings.list_phone_img | image_url: width: 24 }}') no-repeat center center ;
+  }
+  .style-alt .rte ul:last-child li:nth-child(3):before{
+    background: url('{{ section.settings.list_chat_img | image_url: width: 24 }}') no-repeat center center ;
+  }
+</style>
+<div class="container">
+  <div class="product__grid">
+    <div class="product__images swiper" id="product_slider">
+      <div class="swiper-wrapper">
+        {% for media in product.media %}
+          {% render 'product-media', media: media %}
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+    <div class="product__information">
+      {% assign current_variant = product.selected_or_first_available_variant %}
+      {%- assign product_form_id = 'product-form-' | append: section.id -%}
+
+      <h2 class="product__title h2">{{ product.title }}</h2>
+      <p class="product__price">
+        <span>{{ current_variant.price | money }}</span>
+        {% if current_variant.compare_at_price > current_variant.price %}
+          <span class="product__price--old">{{current_variant.compare_at_price | money}}</span>
+        {% endif %}
+      </p>
+      <div class="product__affirm">
+        <p class="affirm-as-low-as" data-amount="950000" data-affirm-type="logo" data-page-type="product" data-affirm-color="blue">Starting at <span class="affirm-ala-price">$331</span>/mo with <span class="__affirm-logo __affirm-logo-blue __ligature__affirm_full_logo__ __processed">Affirm</span>. <a class="affirm-modal-trigger" aria-label="Prequalify now about Affirm Financing (opens in modal)" href="javascript:void(0)">Prequalify now</a>
+        </p>
+      </div>
+
+      <p class="product__ref">Ref: {{ current_variant.sku }}</p>
+
+      <!-- product form -->
+      {%- form 'product', product, id: product_form_id, class: 'product__form', novalidate: 'novalidate', data-type: 'add-to-cart-form', data-section: section.id, data-url: product.url -%}
+
+        <!-- Master selectors -->
+        <input id="product_variant_master" type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" selected="selected">
+        <input id="product_qty_master" type="hidden" name="quantity" min="1" value="1">
+
+        <!-- product option 1 (radio) metal -->
+        {% if product.options_with_values[0] %}
+          <fieldset class="radios option1" name="metal">
+            {% assign option = product.options_with_values[0] %}
+            {% for value in option.values %}
+              <input type="radio" id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                name="{{ option.name }}"
+                value="{{ value | escape }}"
+                form="{{ product_form_id }}"
+                class="variant-input"
+                {% if option.selected_value == value %}checked{% endif %}
+              >
+              <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" class="variant-label">
+                {% if product.options.size == 1 %}
+                  {% assign variant_img = product.variants[forloop.index0].image %}
+                {% else %}
+                  {% assign i = forloop.index0 | times: product.options_with_values[1].values.size %}
+                  {% assign variant_img = product.variants[i].image %}
+                {% endif %}
+                {{ variant_img | image_url: width: 66 | image_tag: class: 'product__variant_image', loading: 'lazy', alt: 'product image' }}
+                {{ value }}
+              </label>
+            {% endfor %}
+          </fieldset>
+        {% endif %}
+
+        <!-- product option 2 (dropdown) size -->
+        {% if product.options_with_values[1] %}
+          <div class="product__dropdown option2">
+            {% assign option = product.options_with_values[1] %}
+            <select
+              class="dropdown__select"
+              name="{{ option.name | escape }}"
+              form="{{ product_form_id }}"
+            >
+              {%- for value in option.values -%}
+                <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                  {{ value }}
+                </option>
+              {%- endfor -%}
+            </select>
+            {% render 'icon-caret' %}
+          </div>
+          <!-- if size option has values -->
+          <div class="product__size-guide">
+            <div>
+              <span id="open_size_chart_popup">{{ section.settings.size_guide_text }} </span>
+              <span id="open_custom_size_popup">{%- render 'icon-size-guide' -%}</span>
+            </div>
+          </div>
+        {% else %}
+          <!-- if size option has no value -->
+          <div class="product__size-guide product__size-guide--empty">
+            <span>{{ section.settings.one_size }}</span>
+          </div>
+        {% endif %}
+
+        <!-- product option 3 (dropdown) -->
+        {% if product.options_with_values[2] %}
+          <div class="product__dropdown option3">
+            {% assign option = product.options_with_values[2] %}
+            <select
+              class="dropdown__select"
+              name="{{ option.name | escape }}"
+              form="{{ product_form_id }}"
+            >
+              {%- for value in option.values -%}
+                <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                  {{ value }}
+                </option>
+              {%- endfor -%}
+            </select>
+            {% render 'icon-right-arrow' %}
+          </div>
+        {% endif %}
+  
+        <button type="submit" class="form-btn product__form__submit" name="add" {%- unless product.selected_or_first_available_variant.available -%}disabled="true"{%endunless%}>
+          {%- if product.selected_or_first_available_variant.available -%}
+            {{ 'products.product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- endif -%}
+        </button>
+        <a href="#concierge-popup" class="form-btn form-btn--white form-btn--contact">{{ section.settings.contact_btn_text }}</a>
+        <p class="product__delivery">{{ section.settings.estimated_delivery }}</p>
+
+      {%- endform -%}
+    </div>
+  </div>
+  <div class="info">
+    <ul class="info-nav">
+      <li class="info-nav__item active" data-target="nav_1">Details</li>
+      <li class="info-nav__item" data-target="nav_2">DESCRIPTION</li>
+    </ul>
+    <div class="info__tabs">
+      <div class="info__tab active" id="nav_1">
+        <div class="info__details rte">
+          {{product.metafields.accentuate.product_details}}
+        </div>
+      </div>
+      <div class="info__tab" id="nav_2">
+        <h3 class="info__tab__title h3">{{product.title}}</h3>
+        <p class="info__description">{{product.description}}</p>
+      </div>
+      <div class="info__img">
+        {% if section.settings.product_details_img %}
+          {{ section.settings.product_details_img | image_url: width: 620 | image_tag: loading: 'lazy', alt: 'product image', widths: '200, 300, 400, 620' }}
+        {% else %}
+          {{ product.featured_image | image_url: width: 620 | image_tag: loading: 'lazy', alt: 'product image', widths: '200, 300, 400, 620' }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- product variant json -->
+<script type="application/json" data-v="v">
+  {{ product.variants | json }}
+</script>
+<!--  Product swiper -->
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+<!-- {% include 'product-zoom' %} -->
+<script>
+  // handle swiper on resize
+  let my_swiper = null;
+  const breakpoint = window.matchMedia('(max-width: 768px)')
+  breakpoint.addListener(check_breakpoint)
+  
+  function check_breakpoint() {
+    if (breakpoint.matches && my_swiper == null) {// on small screens
+      handle_swiper(true)
+    }else if(!breakpoint.matches && my_swiper !== null){
+      handle_swiper(false)
+    }
+    console.log("breakpoint check", !breakpoint.matches && my_swiper !== null)
+  }
+  function handle_swiper(enable) {
+    if (enable) {
+      my_swiper = new Swiper("#product_slider", {
+        slidesPerView: 1,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        breakpoints: {
+          480: {
+            slidesPerView: 2,
+            spaceBetween: 40,
+          }
+        }
+      });
+    }else{
+      my_swiper.destroy();
+      my_swiper = null;
+    }
+    console.log(enable)
+  }
+
+  check_breakpoint()
+
+  // open zoom popup
+  document.querySelector("#product_slider").addEventListener("click", e=>{
+    if (e.target.classList.contains("product__image") && !breakpoint.matches) {
+      e.stopPropagation()
+      slide_to(Number(e.target.parentElement.getAttribute("data-target")))
+    }
+  })
+</script>
+<!-- Other scripts -->
+<script>
+  // Option selection
+  let productForm = document.querySelector(".product__form");
+  let section_id = productForm.getAttribute("data-section");
+  let product_url = productForm.getAttribute("data-url");
+  // Get variants
+  let variants = JSON.parse(document.querySelector('[data-v="v"]').textContent)
+  productForm.addEventListener("change", e=>{
+    // update options
+    let options = [];
+    if (productForm.querySelector('.option1')) {
+      options.push(productForm.querySelector('.option1 input:checked').value)
+    }
+    if (productForm.querySelector(".option2")) {
+      options.push(productForm.querySelector(".option2 select").value)
+    }
+    if (productForm.querySelector(".option3")) {
+      options.push(productForm.querySelector(".option3 select").value)
+    }
+    // update master id
+    let currentVariant = variants.find((variant) => {
+      return !variant.options.map((option, index) => {
+        return options[index] === option;
+      }).includes(false);
+    });
+
+    if(currentVariant){
+      // update url
+      window.history.replaceState({ }, '', `{{product.url}}?variant=${currentVariant.id}`);
+      // update master selector
+      productForm.querySelector('input[name="id"]').value = currentVariant.id;
+      
+      // update Media
+      let selected_color = productForm.querySelector('.option1 input:checked').value
+      if (selected_color.trim() !== document.querySelector(".product__images .swiper-slide.active").getAttribute("data-color").trim()) {
+        document.querySelectorAll(".product__images .swiper-slide").forEach(img=>{
+          if (selected_color.trim() === img.getAttribute("data-color").trim()) {
+            img.classList.add("active")
+          }else{
+            img.classList.remove("active")
+          }
+        })
+      }
+
+      // update price
+      fetch(`${product_url}?variant=${currentVariant.id}&section_id=${section_id}`)
+      .then((response) => response.text())
+      .then((responseText) => {
+        
+        const html = new DOMParser().parseFromString(responseText, 'text/html')
+        const destination = document.querySelector(".product__price");
+        const source = html.querySelector(".product__price");
+        if (source && destination){
+          destination.innerHTML = source.innerHTML;
+        }
+
+      });
+
+      // update UI
+      if (currentVariant.sku) {
+        document.querySelector(".product__ref").classList.remove("hidden")
+        document.querySelector(".product__ref").textContent = `Ref: ${currentVariant.sku}`
+      } else{
+        document.querySelector(".product__ref").classList.add("hidden")
+      }
+
+      if(currentVariant.available){
+        document.querySelector(".product__form__submit").removeAttribute("disabled")
+        document.querySelector(".product__form__submit").textContent = "{{ 'products.product.add_to_cart' | t }}";
+      }else{
+        document.querySelector(".product__form__submit").setAttribute("disabled", true)
+        document.querySelector(".product__form__submit").textContent = "{{ 'products.product.sold_out' | t }}"
+      }
+    }
+  })
+  
+  // Add to cart btn
+  productForm.addEventListener("submit", async(e)=>{
+    e.preventDefault();
+    let formData = {
+      'items': [{
+        'id': document.querySelector("#product_variant_master").value,
+        'quantity': document.querySelector("#product_qty_master").value
+        }]
+    };
+    let res = await fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      }
+    );
+
+    // render_cart()
+  })
+  
+  // Render cart 
+  function render_cart() {
+    $(".price-sec").show();
+    $(".shipping").show();
+    $(".cart-drawer-empty").hide();
+
+    $('body').addClass("js-drawer-open-right");
+    $.ajax({
+      url:'/cart.js',
+      type:"GET",
+      dataType: 'JSON',
+      success:function(res){
+
+        var items=res['items'];
+        var cond=items.length;
+        if(cond==0)
+        {
+          $(".price-sec").hide();
+          $(".shipping").hide();
+          $(".cart-drawer-empty").show();
+          $(".cart-drawer-sec").addClass("heights");
+        }
+
+        else
+        {
+          $(".price-sec").show();
+          $(".shipping").show();
+          $(".cart-drawer-empty").hide();
+        }
+        var finalprice=parseFloat(res['total_price']/100);
+
+        var finalprice = finalprice.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'); 
+        var finalprice = finalprice.replace(",",",");
+        $(".subtotal-sec .total-price").remove();
+        $(".cart-drawer .subtotal-sec").append("<div class='total-price'>$"+finalprice+ ".00</div>");
+        var itemcount=res['item_count'];
+        console.log(itemcount);
+        setTimeout(function(){
+
+          $(".site-header__cart-count span").text(itemcount);
+          $(".site-header__cart-count").removeClass("hide");
+        },1000);
+
+        var i;
+        $(".content-block").remove();
+        $('.cart-drawer-sec .bottom').append("<div class='content-block'></div>");
+        var line_item_id = '1';
+        for(i=0;i<items.length;i++){
+          var title=items[i]['product_title'];
+          var variant=items[i]['variant_title'];
+          var price=parseFloat(items[i]['price']/100);
+          var price = price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'); 
+          var price = price.replace(",",",");
+
+          var price_new=parseFloat(items[i]['price']/100);
+          var discount=parseFloat(items[i]['total_discount']/100);
+          var discount=((price_new) - (discount));
+          var discount=discount.toFixed(2);
+          var discount = discount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'); 
+
+          var discount = discount.replace(",",",");
+
+          var img=items[i]['image'];
+          var qty=items[i]['quantity'];
+
+          $('.cart-drawer-sec .bottom .content-block').append("<div class='part loop-"+i+"'></div>");
+
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i).append("<div class='image'></div>");
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i).append("<div class='content'></div>");
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content").append("<div class='titlesec'></div>");
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content").append("<div class='quantitybox'></div>");
+
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .image").append("<div class='img'><img src="+img+"></div>");
+
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content .titlesec").append("<div class='title'>" +title+ "</div>");
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content .titlesec").append("<div class='vartitle'>" +variant+ "</div>");
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content .titlesec").append("<div data-price='"+price+"' class='price'>$"+price+ "</div>");
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content .titlesec").append("<div data-price='"+discount+"' class='price discount'>$"+discount+ "</div>");
+
+          var property = items[i]['properties'];
+          if(property != null ){
+            var frequency_num = items[i]['properties']['frequency_num'];
+            if(frequency_num != undefined){
+              $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content .titlesec").append("<div class='num'>Every " +frequency_num+ " </div>");
+            }
+
+            var frequency_type_text = items[i]['properties']['frequency_type_text'];
+            if(frequency_type_text != undefined){
+              $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content .titlesec").append("<div class='mnts'>" +frequency_type_text+ " </div>");
+            }
+            var properties = items[i]['properties']['group_id'];
+            if(properties != undefined){
+              token=1;
+            }
+          }
+          $(".cart-drawer-sec .bottom .content-block .loop-"+i+" .content .quantitybox").append("<button class='minus_quantity' data-id='"+line_item_id+"'>-</button><input type='number' class='cart__qty-input' data-id='"+line_item_id+"' value="+qty+" min='0' pattern='[0-9]*'><button class='plus_quantity' data-id='"+line_item_id+"'>+</button>");
+          var line_item_id = parseInt(line_item_id)+parseInt(1); 
+
+        } 
+      }
+    });
+  }
+
+  // product info (bottom part)
+  [...document.querySelectorAll('.info-nav__item')].forEach((el)=>{
+    el.addEventListener("click", function(){
+      document.querySelector(".info-nav__item.active").classList.remove("active")
+      this.classList.add("active");
+      document.querySelector(".info__tab.active").classList.remove("active")
+      document.querySelector(`.info__tabs #${this.getAttribute("data-target")}`).classList.add("active")
+    })
+  })
+  // popup modals close on overlay
+  // $("#MainContent").click(function(e){
+  //   if (e.target.classList.contains("itg-popup-main")) {
+  //     e.stopPropagation()
+  //     e.target.style.display = "none";
+  //     $('body').removeClass("stopScroll");
+  //   }
+  // });
+</script>
+
+{% schema %}
+{
+  "name": "Product main section",
+  "tag": "section",
+  "class": "product style-alt",
+  "settings": [
+    {
+      "type": "text",
+      "id": "size_guide_text",
+      "label": "Submit button text",
+      "default": "Our Size Guide"
+    },
+    {
+      "type": "text",
+      "id": "one_size",
+      "label": "No size option text",
+      "default": "One size"
+    },
+    {
+      "type": "text",
+      "id": "contact_btn_text",
+      "label": "Contact button text",
+      "default": "SPEAK WITH AN ASSOCIATE"
+    },
+    {
+      "type": "text",
+      "id": "estimated_delivery",
+      "label": "Delivery information",
+      "default": "Estimated Delivery: 1-2 days"
+    },
+    {
+     "type": "header",
+     "content": "Product details"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_details_img",
+      "label": "Product details image"
+    },
+    {
+      "type": "image_picker",
+      "id": "list_bullet_img",
+      "label": "Product details list bullet image"
+    },
+    {
+      "type": "image_picker",
+      "id": "list_email_img",
+      "label": "Product details list email image"
+    },
+    {
+      "type": "image_picker",
+      "id": "list_phone_img",
+      "label": "Product details list phone image"
+    },
+    {
+      "type": "image_picker",
+      "id": "list_chat_img",
+      "label": "Product details list chat image"
+    }
+  ],
+  "blocks": [
+  ]
+}
+{% endschema %}

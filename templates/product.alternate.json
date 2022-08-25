@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product-alternate",
+      "settings": {
+        "size_guide_text": "Our Size Guide",
+        "one_size": "One size",
+        "contact_btn_text": "SPEAK WITH AN ASSOCIATE",
+        "estimated_delivery": "Estimated Delivery: 1-2 days",
+        "list_bullet_img": "shopify:\/\/shop_images\/2x.png",
+        "list_email_img": "shopify:\/\/shop_images\/Email_3bc1ac9c-173f-4795-a19d-fdda5cf0e929.png",
+        "list_phone_img": "shopify:\/\/shop_images\/Phone_99d3bf4b-445c-4d7c-905c-656528b3c215.png",
+        "list_chat_img": "shopify:\/\/shop_images\/Chat.png"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

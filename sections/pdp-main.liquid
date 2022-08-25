@@ -3,6 +3,7 @@
 <!-- Link Swiper's CSS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 {%- assign product_form_id = 'product-form-' | append: section.id -%}
+{% assign current_variant = product.selected_or_first_available_variant %}
 
 <div class="container">
   <div class="main-grid">
@@ -23,9 +24,9 @@
 
         <h1 class="text-24">{{ product.title }}</h1>
         <p class="product__price">
-          <span>{{ product.price | money }}</span>
-          {% if product.compare_at_price %}
-            <span class="old_price">{{product.compare_at_price | money}}</span>
+          <span>{{ current_variant.price | money }}</span>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <span class="old_price">{{ current_variant.compare_at_price | money }}</span>
           {% endif %}
         </p>
         <div class="ratings">
@@ -49,7 +50,7 @@
           <a class="product__affirm__text" href="{{ section.settings.affirm_url }}">{{ section.settings.affirm }}</a>
         </div>
         <div>{{ product.description }}</div>
-        {%- form 'product', product, id: product_form_id, class: 'product-form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+        {%- form 'product', product, id: product_form_id, class: 'product-form', novalidate: 'novalidate', data-type: 'add-to-cart-form', data-section: section.id, data-url: product.url -%}
         <fieldset class="variants" name="is_id">
           {% for variant in product.variants %}
 
@@ -127,43 +128,59 @@
       // dynamicBullets: true,
     },
   });
+  let productForm = document.querySelector(".product-form");
+  let section_id = productForm.getAttribute("data-section");
+  let product_url = productForm.getAttribute("data-url");
+  
+  productForm.addEventListener("change", e => {
+    let current_variant = document.querySelector(".variants input:checked").value;
+    // update price
+    fetch(`${product_url}?section_id=${section_id}&variant=${current_variant}`)
+    .then((response) => response.text())
+    .then((responseText) => {
+      const html = new DOMParser().parseFromString(responseText, 'text/html')
+      const destination = document.querySelector(".product__price");
+      const source = html.querySelector(".product__price");
+      if (source && destination){
+        destination.innerHTML = source.innerHTML;
+      }
+    });
 
-document.querySelector(".product-form").addEventListener("change", e => {
-  document.querySelector(".product__price").textContent = document.querySelector(".variants input:checked").getAttribute("price");
-  document.querySelector("#product_size_master").value = document.querySelector(".variants input:checked").value;
-  document.querySelector("#product_qty_master").value = 1;
-})
-document.querySelector(".product-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  document.querySelector(".template-product").classList.add("waiting")
-  let formData = {
-    'items': [{
-      'id': document.querySelector("#product_size_master").value,
-      'quantity': document.querySelector("#product_qty_master").value
-      }]
-  };
-  let res = await fetch(window.Shopify.routes.root + 'cart/add.js', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(formData)
-    })
-    .catch((error) => {
-      console.error('Error:', error);
+    // document.querySelector(".product__price").textContent = document.querySelector(".variants input:checked").getAttribute("price");
+    document.querySelector("#product_size_master").value = current_variant;
+    document.querySelector("#product_qty_master").value = 1;
+  })
+  document.querySelector(".product-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    document.querySelector(".template-product").classList.add("waiting")
+    let formData = {
+      'items': [{
+        'id': document.querySelector("#product_size_master").value,
+        'quantity': document.querySelector("#product_qty_master").value
+        }]
+    };
+    let res = await fetch(window.Shopify.routes.root + 'cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      }
+    );
+    render_cart()
+    if(res.status < 400){
+      document.querySelector(".template-product").classList.remove("waiting")
+    }else{
+      let msg = await res.json()
+      alert_error(msg.description)
+      document.querySelector(".template-product").classList.remove("waiting")
+      return
     }
-  );
-  render_cart()
-  if(res.status < 400){
-    document.querySelector(".template-product").classList.remove("waiting")
-  }else{
-    let msg = await res.json()
-    alert_error(msg.description)
-    document.querySelector(".template-product").classList.remove("waiting")
-    return
-  }
-  document.querySelector(".cart").classList.add("active")
-})
+    document.querySelector(".cart").classList.add("active")
+  })
 
 // if product has no recommendations in metafield 
   if (!document.querySelector(".product__recommendations__row").innerHTML.trim().length) {

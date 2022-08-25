@@ -3,30 +3,41 @@
 <div class="container container--form">
     <h2 class="text-24 form__title">Create an Account</h2>
     <p class="error">Passwords don't match.</p>
+
+    <!-- <div class="klaviyo-form-SWeb4Y"></div> -->
+
     {% form 'create_customer', class: "form" %}
     {{ form.errors | default_errors }}
     <div class="double_row">
         <label class="form__label" for="first_name">
-            <input class="form__input" type="text" name="customer[first_name]" size="30" required/>
+            <input class="form__input" type="text" name="customer[first_name]" size="30" required id="FirstName" />
             <span>First Name</span>
         </label>
         <label class="form__label" for="last_name">
-            <input class="form__input" type="text" name="customer[last_name]" size="30" required/>
+            <input class="form__input" type="text" name="customer[last_name]" size="30" required id="LastName" />
             <span>Last Name</span>
         </label>
     </div>
 
     <label class="form__label" for="email">
-        <input class="form__input" type="email" name="customer[email]" size="30" required />
+        <input class="form__input" type="email" name="customer[email]" size="30" required id="Email" />
         <span>Email Address</span>
     </label>
 
+    <label class="form__label" for="birthday">
+        <input id="Birthday" class="form__input" type="date" name="customer[note][Birthday]" required />
+    </label>
+    <div id="accepts_marketing_checkbox">
+        <input type="checkbox" name="customer[accepts_marketing]" checked="checked" value="true" id="marketing">
+        <label for="marketing">Yes! Sign me up to receive emails about all the latest tots.</label>
+    </div>
+
     <label class="form__label" for="password">
-        <input class="form__input pass" type="password" name="customer[password]" required/>
+        <input class="form__input pass" type="password" name="customer[password]" required />
         <span>Password</span>
     </label>
     <label class="form__label">
-        <input class="form__input check_pass" type="password" name="customer[password_confirmation]" required/>
+        <input class="form__input check_pass" type="password" name="customer[password_confirmation]" required />
         <span>Confirm password</span>
     </label>
     <button type="submit" class="btn btn--black form__btn">Create an Account</button>
@@ -34,5 +45,44 @@
     <p class="login_option">Already have an account?</p>
     <a href="{{ routes.account_login_url }}" class="btn btn--secondary">Log in</a>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelector(".form__btn").addEventListener("click", e => {
+            if (document.querySelector("#Birthday").value.length > 0) {
+                e.preventDefault();
+                // grab fields;         
+                let email = document.querySelector("input#Email").value;
+                let firstname = document.querySelector("input#FirstName").value;
+                let lastname = document.querySelector("input#LastName").value;
+                let birthday = document.querySelector("input#Birthday").value;
+
+                let props = {
+                    "token": "W5Xj5G",
+                    "properties": {
+                        "$email": email,
+                        "$region": "Illinois",
+                        "Birthday": birthday
+                    }
+                }
+                const options = {
+                    method: 'POST',
+                    headers: { Accept: 'text/html', 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        data: JSON.stringify(props)
+                    })
+                };
+                fetch('https://a.klaviyo.com/api/identify', options)
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response);
+                        document.querySelector("#create_customer").submit()
+                    })
+                    .catch(err => console.error(err));
+
+            }
+        })
+    });
+</script>
 
 <script src="{{ 'script.customer.js' | asset_url }}"></script>
